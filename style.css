@@ -1,0 +1,37 @@
+::selection{
+    background-color: white;
+    color: black;
+}
+
+body{
+    background-color: black;
+}
+
+.header{
+    color: white;
+    font-size: 50px;  
+    font-family: Arial, Helvetica, sans-serif;
+    text-emphasis-color: red;
+    text-align: center;
+    margin-top: 50px;
+}
+.hossamimg2{ 
+    border: 3px solid white;
+    border-radius: 10px;
+    margin-left: 35px;
+    position: absolute;
+    left: 25;
+    animation: slideMe 5s; 
+
+}
+@keyframes slideMe {
+    0%{
+        opacity: 15%;  
+    }
+    50%{
+        opacity: 50%;
+    }
+    100%{
+        opacity: 100%;
+    }
+}
