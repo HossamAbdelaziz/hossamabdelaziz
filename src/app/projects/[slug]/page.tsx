@@ -3,11 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { projects, getProject } from '@/content/projects';
-import { hasCaseStudy } from '@/content/types';
-import SiteHeader from '@/components/SiteHeader';
-import Footer from '@/components/Footer';
+import { hasCaseStudy, type Project } from '@/content/types';
+import SplitLayout from '@/components/SplitLayout';
+import CaseRail from '@/components/CaseRail';
 import SectionLabel from '@/components/SectionLabel';
 import Diagram from '@/components/Diagram';
+import type { RailNavItem } from '@/components/RailNav';
 
 export function generateStaticParams() {
     return projects.filter(hasCaseStudy).map((p) => ({ slug: p.slug }));
@@ -32,6 +33,23 @@ export async function generateMetadata({
     };
 }
 
+/** Only list sections that actually have content. */
+function sectionsOf(project: Project): RailNavItem[] {
+    const maybe: Array<[boolean, RailNavItem]> = [
+        [Boolean(project.problem?.length), { id: 'problem', label: 'The problem' }],
+        [
+            Boolean(project.architecture?.length),
+            { id: 'architecture', label: 'Architecture' },
+        ],
+        [Boolean(project.diagram), { id: 'diagram', label: 'How it fits' }],
+        [Boolean(project.tradeoffs?.length), { id: 'tradeoffs', label: 'Trade-offs' }],
+        [Boolean(project.hardest?.length), { id: 'hardest', label: 'Hardest problem' }],
+        [Boolean(project.testing?.length), { id: 'testing', label: 'Testing' }],
+        [Boolean(project.stack?.length), { id: 'stack', label: 'Built with' }],
+    ];
+    return maybe.filter(([on]) => on).map(([, item]) => item);
+}
+
 function Prose({ paragraphs }: { paragraphs: string[] }) {
     return (
         <div className="t-prose mt-8 space-y-5">
@@ -43,14 +61,21 @@ function Prose({ paragraphs }: { paragraphs: string[] }) {
 }
 
 function Section({
+    id,
     label,
     children,
+    first,
 }: {
+    id: string;
     label: string;
     children: React.ReactNode;
+    first?: boolean;
 }) {
     return (
-        <section className="border-t border-[var(--rule)] py-14 sm:py-20">
+        <section
+            id={id}
+            className={`scroll-mt-8 py-14 lg:py-20 ${first ? '' : 'border-t border-[var(--rule)]'}`}
+        >
             <SectionLabel>{label}</SectionLabel>
             {children}
         </section>
@@ -66,48 +91,13 @@ export default async function ProjectPage({
     const project = getProject(slug);
     if (!project || !hasCaseStudy(project)) notFound();
 
+    const sections = sectionsOf(project);
+
     return (
-        <>
-            <SiteHeader />
-
-            <main className="mx-auto max-w-[var(--w-wide)] px-5 sm:px-6">
-                <header className="pt-12 pb-14 sm:pt-16">
-                    <Link
-                        href="/#work"
-                        className="t-meta underline-offset-4 hover:underline"
-                    >
-                        ← All work
-                    </Link>
-
-                    <h1 className="t-h1 mt-8">{project.name}</h1>
-
-                    <p className="t-prose mt-4">{project.tagline}</p>
-
-                    <p className="t-meta mt-6">
-                        {project.dates}
-                        {'  ·  '}
-                        {project.status === 'live' ? 'Live' : 'In progress'}
-                    </p>
-
-                    {project.links && project.links.length > 0 && (
-                        <p className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[15px]">
-                            {project.links.map((link) => (
-                                <a
-                                    key={link.href}
-                                    href={link.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="prose-link"
-                                >
-                                    {link.label}
-                                </a>
-                            ))}
-                        </p>
-                    )}
-                </header>
-
-                {project.facts && project.facts.length > 0 && (
-                    <ul className="border border-[var(--rule)] bg-[var(--paper-raised)]">
+        <SplitLayout rail={<CaseRail project={project} sections={sections} />}>
+            {project.facts && project.facts.length > 0 && (
+                <section className="pt-12 pb-2 lg:pt-20">
+                    <ul className="max-w-[var(--w-read)] border border-[var(--rule)] bg-[var(--paper-raised)]">
                         {project.facts.map((fact) => (
                             <li
                                 key={fact}
@@ -117,91 +107,94 @@ export default async function ProjectPage({
                             </li>
                         ))}
                     </ul>
-                )}
+                </section>
+            )}
 
-                {project.problem && (
-                    <Section label="The problem">
-                        <Prose paragraphs={project.problem} />
-                    </Section>
-                )}
+            {project.problem && (
+                <Section id="problem" label="The problem" first={!project.facts?.length}>
+                    <Prose paragraphs={project.problem} />
+                </Section>
+            )}
 
-                {project.architecture && project.architecture.length > 0 && (
-                    <Section label="Architecture">
-                        <div className="mt-8 max-w-[var(--w-read)] space-y-8">
-                            {project.architecture.map((note) => (
-                                <div key={note.title}>
-                                    <h3 className="t-h3">{note.title}</h3>
-                                    <p className="t-prose mt-2">{note.body}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </Section>
-                )}
+            {project.architecture && project.architecture.length > 0 && (
+                <Section id="architecture" label="Architecture">
+                    <div className="mt-8 max-w-[var(--w-read)] space-y-8">
+                        {project.architecture.map((note) => (
+                            <div key={note.title}>
+                                <h3 className="t-h3">{note.title}</h3>
+                                <p className="t-prose mt-2">{note.body}</p>
+                            </div>
+                        ))}
+                    </div>
+                </Section>
+            )}
 
-                {project.diagram && (
-                    <Section label="How it fits together">
-                        <div className="mt-8">
-                            <Diagram spec={project.diagram} />
-                        </div>
-                    </Section>
-                )}
+            {project.diagram && (
+                <Section id="diagram" label="How it fits together">
+                    <div className="mt-8">
+                        <Diagram spec={project.diagram} />
+                    </div>
+                </Section>
+            )}
 
-                {project.tradeoffs && project.tradeoffs.length > 0 && (
-                    <Section label="Trade-offs">
-                        <Prose paragraphs={project.tradeoffs} />
-                    </Section>
-                )}
+            {project.tradeoffs && project.tradeoffs.length > 0 && (
+                <Section id="tradeoffs" label="Trade-offs">
+                    <Prose paragraphs={project.tradeoffs} />
+                </Section>
+            )}
 
-                {project.hardest && project.hardest.length > 0 && (
-                    <Section label="The hardest problem">
-                        <Prose paragraphs={project.hardest} />
-                    </Section>
-                )}
+            {project.hardest && project.hardest.length > 0 && (
+                <Section id="hardest" label="The hardest problem">
+                    <Prose paragraphs={project.hardest} />
+                </Section>
+            )}
 
-                {project.testing && project.testing.length > 0 && (
-                    <Section label="Testing and release">
-                        <Prose paragraphs={project.testing} />
-                    </Section>
-                )}
+            {project.testing && project.testing.length > 0 && (
+                <Section id="testing" label="Testing and release">
+                    <Prose paragraphs={project.testing} />
+                </Section>
+            )}
 
-                {project.photo && (
-                    <Section label="">
-                        <figure className="mt-2">
-                            <Image
-                                src={project.photo.src}
-                                alt={project.photo.alt}
-                                width={1600}
-                                height={686}
-                                className="h-auto w-full rounded-[2px] border border-[var(--rule)]"
-                            />
-                            {project.photo.caption && (
-                                <figcaption className="t-meta mt-3">
-                                    {project.photo.caption}
-                                </figcaption>
-                            )}
-                        </figure>
-                    </Section>
-                )}
+            {project.photo && (
+                <section className="border-t border-[var(--rule)] py-14 lg:py-20">
+                    <figure>
+                        <Image
+                            src={project.photo.src}
+                            alt={project.photo.alt}
+                            width={1600}
+                            height={686}
+                            className="h-auto w-full rounded-[2px] border border-[var(--rule)]"
+                        />
+                        {project.photo.caption && (
+                            <figcaption className="t-meta mt-3">
+                                {project.photo.caption}
+                            </figcaption>
+                        )}
+                    </figure>
+                </section>
+            )}
 
-                {project.stack && project.stack.length > 0 && (
-                    <Section label="Built with">
-                        <p className="t-meta mt-8 max-w-[var(--w-read)] leading-7">
-                            {project.stack.join('  ·  ')}
-                        </p>
-                    </Section>
-                )}
+            {project.stack && project.stack.length > 0 && (
+                <Section id="stack" label="Built with">
+                    <ul className="mt-8 flex max-w-[var(--w-read)] flex-wrap gap-2">
+                        {project.stack.map((tech) => (
+                            <li
+                                key={tech}
+                                className="border border-[var(--rule)] px-3 py-1.5 font-mono text-[12px] text-[var(--ink-soft)]"
+                            >
+                                {tech}
+                            </li>
+                        ))}
+                    </ul>
+                </Section>
+            )}
 
-                <div className="border-t border-[var(--rule)] py-12">
-                    <Link
-                        href="/#work"
-                        className="prose-link text-[15px]"
-                    >
-                        ← All work
-                    </Link>
-                </div>
-            </main>
-
-            <Footer />
-        </>
+            <div className="border-t border-[var(--rule)] py-12">
+                <Link href="/#work" className="prose-link text-[15px]">
+                    ← All work
+                </Link>
+                <p className="t-label mt-10">© 2026 Hossam Abdelaziz</p>
+            </div>
+        </SplitLayout>
     );
 }

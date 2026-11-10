@@ -53,7 +53,7 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                     observer.disconnect();
                 }
             },
-            { rootMargin: '0px 0px -15% 0px', threshold: 0.15 },
+            { threshold: 0 },
         );
         observer.observe(el);
         return () => observer.disconnect();
@@ -85,13 +85,39 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
     const nodeDelay = (col: number) => col * 180;
     const edgeDelay = 180 * spec.columns.length + 120;
 
-    const visible = !armed || shown;
     const cls = (base: string) =>
         armed ? `${base} reveal${shown ? ' is-in' : ''}` : base;
 
     return (
         <div ref={ref}>
-            <div className="overflow-x-auto border border-[var(--rule)] bg-[var(--paper-raised)]">
+            {/* Small screens get the pieces as a list; a 660px-wide SVG that
+                scrolls sideways is worse than no diagram on a phone. */}
+            <div className="border border-[var(--rule)] bg-[var(--paper-raised)] sm:hidden">
+                {spec.columns.map((col) => (
+                    <div
+                        key={col.title}
+                        className="border-b border-[var(--rule)] px-5 py-4 last:border-b-0"
+                    >
+                        {col.title && <p className="t-label">{col.title}</p>}
+                        <ul className="mt-3 space-y-3">
+                            {col.nodes.map((node) => (
+                                <li key={node.id}>
+                                    <p className="font-mono text-[13px] text-[var(--ink)]">
+                                        {node.label}
+                                    </p>
+                                    {node.role && (
+                                        <p className="text-[14px] text-[var(--ink-faint)]">
+                                            {node.role}
+                                        </p>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+
+            <div className="hidden overflow-x-auto border border-[var(--rule)] bg-[var(--paper-raised)] sm:block">
                 <svg
                     viewBox={`0 0 ${width} ${height}`}
                     style={{ minWidth: 660 }}
@@ -148,7 +174,7 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                                 key={i}
                                 d={`M ${sx} ${sy} C ${sx + bend} ${sy}, ${ex - bend} ${ey}, ${ex} ${ey}`}
                                 fill="none"
-                                stroke="var(--ink-faint)"
+                                stroke="var(--rule-strong)"
                                 strokeWidth={1}
                                 markerEnd="url(#diagram-arrow)"
                                 className={cls('')}
@@ -168,7 +194,7 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                                 y={node.y}
                                 width={NODE_W}
                                 height={NODE_H}
-                                fill="var(--paper)"
+                                fill="var(--rail)"
                                 stroke="var(--rule)"
                                 strokeWidth={1}
                             />
@@ -198,7 +224,7 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                 </svg>
             </div>
 
-            <ul className="mt-8 max-w-[var(--w-read)]" aria-hidden={!visible}>
+            <ul className="mt-8 max-w-[var(--w-read)]">
                 {spec.edges.map((edge, i) => {
                     const a = byId.get(edge.from);
                     const b = byId.get(edge.to);
@@ -206,10 +232,7 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                     return (
                         <li
                             key={i}
-                            className={cls(
-                                'border-t border-[var(--rule)] py-2.5 text-[15px] leading-relaxed text-[var(--ink-soft)]',
-                            )}
-                            style={{ transitionDelay: `${edgeDelay + i * 60}ms` }}
+                            className="border-t border-[var(--rule)] py-2.5 text-[15px] leading-relaxed text-[var(--ink-soft)]"
                         >
                             <span className="t-meta text-[var(--ink)]">
                                 {a.label} → {b.label}

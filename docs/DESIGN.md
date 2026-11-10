@@ -32,22 +32,26 @@ in this session, so it is not derived from examples of real sites.
 
 ## Colour
 
-Light only. A dark theme is a later decision, not a default.
+**Dark and warm** (changed 2026-11-10 — the first light version read as too
+bright beside the dark rail). Two tones of dark carry the split: the rail is
+the deepest, content sits a step lighter.
 
 | Token | Value | Role |
 |---|---|---|
-| `--paper` | `#faf8f4` | Page background. Warm off-white, not pure white |
-| `--paper-raised` | `#f3efe7` | Quiet panels: facts strip, diagram ground |
-| `--ink` | `#1a1714` | Body text and headings. 15.8:1 on paper |
-| `--ink-soft` | `#4a433c` | Secondary prose, long captions. 8.6:1 |
-| `--ink-faint` | `#7a7169` | Meta, labels, dates. 4.6:1 — never below 13px bold |
-| `--rule` | `#ded7cb` | Hairlines between sections and rows |
-| `--rule-strong` | `#1a1714` | The 2px rule that opens a major section |
-| `--accent` | `#a33b1f` | Links, the active nav item, diagram arrowheads. 6.1:1 |
-| `--accent-wash` | `#f0e2dc` | Rare: the one highlighted fact |
+| `--rail` | `#121010` | The fixed identity column, and diagram node fills |
+| `--paper` | `#1b1817` | Page background for content |
+| `--paper-raised` | `#241f1d` | Quiet panels: facts strip, diagram ground |
+| `--ink` | `#f3eee7` | Headings and emphasis. Warm off-white, never pure |
+| `--ink-soft` | `#c6bcb1` | Body prose |
+| `--ink-faint` | `#8d8378` | Meta, labels, dates |
+| `--rule` | `#332d29` | Hairlines between sections and rows |
+| `--rule-strong` | `#6f655c` | Diagram arrows, the bar above a section label |
+| `--accent` | `#e07a52` | Links, the active nav item, diagram arrowheads |
+| `--accent-light` | `#eb9a79` | Hover |
 
-One accent only. It is rust, not blue — blue on white is the default
-every portfolio reaches for, and rust belongs to printed matter.
+One accent only, and it is warm rust rather than the blue or teal every
+generated portfolio reaches for. The warmth is what keeps this from being
+the default dark theme.
 
 No success/warning/error colours: the site has no forms and no states.
 Project status is set in type, not colour.
@@ -111,8 +115,9 @@ left-aligned, always.
 
 **Radius: 0** for everything structural. 2px on images and the portrait.
 
-**No shadows.** Depth comes from the paper tones and hairline rules.
-A shadow on this site would be the one thing that gives it away.
+**No shadows**, with one exception: the phone screenshot layered over a
+web screenshot needs one to separate the two. Everywhere else depth comes
+from the two dark tones and hairline rules.
 
 Separation:
 - `1px solid var(--rule)` between rows and sections
@@ -175,9 +180,36 @@ decorative, never coloured.
 
 ---
 
-## Still to decide
+## Layout: the split
 
-- Whether to add a dark theme at all.
+Both the home page and every case study use `SplitLayout`: a fixed rail on
+the left (42%, max 560px, full viewport height, `--rail` background) beside
+a scrolling content column.
+
+- **Home rail:** portrait, name, the co-op line, and section nav.
+- **Case study rail:** back link, project name, tagline, dates, links, and a
+  table of contents built only from the sections that actually have content.
+
+Both navs highlight the section in view. Below 1024px the rail becomes a
+normal block at the top of the page and the nav is hidden — the content is
+short enough to scroll.
+
+## Motion
+
+Only one animated thing: the system diagram assembles as it scrolls into
+view, columns first, then the arrows. It falls back to fully visible when
+scripting is off or `prefers-reduced-motion` is set, and the written flow
+list beneath it is never hidden, because it is content, not decoration.
+
+## Mobile
+
+Below 640px the diagram's SVG is replaced by a stacked list of the same
+pieces, grouped by column. A 660px-wide drawing that scrolls sideways is
+worse on a phone than no drawing at all.
+
+Checked for horizontal overflow at 375, 768, 1024 and 1440.
+
+## Still to decide
 - Whether the LinkedIn banner gets re-cut to match this (it is currently
   dark blue-to-teal, from `BANNER_SOURCE.md`) — the two will not look
   like the same hand until it does.

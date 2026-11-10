@@ -21,7 +21,7 @@ export default function WorkEntry({ project }: { project: Project }) {
                         className="h-auto w-full"
                     />
                     {project.coverPhone && (
-                        <div className="absolute right-5 -bottom-2 hidden w-[88px] overflow-hidden rounded-[6px] border border-[var(--rule)] shadow-[0_2px_14px_rgba(26,23,20,0.14)] sm:block sm:w-[110px]">
+                        <div className="absolute right-5 -bottom-2 hidden w-[88px] overflow-hidden rounded-[6px] border border-[var(--rule)] shadow-[0_4px_18px_rgba(0,0,0,0.45)] sm:block sm:w-[110px]">
                             <Image
                                 src={project.coverPhone.src}
                                 alt={project.coverPhone.alt}
