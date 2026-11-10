@@ -3,10 +3,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Diagram as DiagramSpec } from '@/content/types';
 
-const NODE_W = 196;
-const NODE_H = 58;
+const NODE_W = 168;
+const NODE_H = 56;
 const NODE_GAP = 18;
-const COL_GAP = 88;
+const COL_GAP = 64;
 const TITLE_H = 28;
 const PAD = 14;
 
@@ -92,7 +92,7 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
         <div ref={ref}>
             {/* Small screens get the pieces as a list; a 660px-wide SVG that
                 scrolls sideways is worse than no diagram on a phone. */}
-            <div className="border border-[var(--rule)] bg-[var(--paper-raised)] sm:hidden">
+            <div className="border border-[var(--rule)] bg-[var(--paper-raised)] xl:hidden">
                 {spec.columns.map((col) => (
                     <div
                         key={col.title}
@@ -117,10 +117,9 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                 ))}
             </div>
 
-            <div className="hidden overflow-x-auto border border-[var(--rule)] bg-[var(--paper-raised)] sm:block">
+            <div className="hidden border border-[var(--rule)] bg-[var(--paper-raised)] xl:block">
                 <svg
                     viewBox={`0 0 ${width} ${height}`}
-                    style={{ minWidth: 660 }}
                     className="w-full"
                     role="img"
                     aria-label="System diagram"
