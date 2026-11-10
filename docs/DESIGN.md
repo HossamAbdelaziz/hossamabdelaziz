@@ -49,12 +49,23 @@ mid-dark values — between the original light paper and that first dark.
 | `--ink-faint` | `#ada399` | Meta, labels, dates. 5.6:1 |
 | `--rule` | `#4a433e` | Hairlines between sections and rows |
 | `--rule-strong` | `#8d8378` | Diagram arrows, the bar above a section label |
-| `--accent` | `#ef8a60` | Links, the active nav item, diagram arrowheads. 5.6:1 |
+| `--accent` | `#ef8a60` | Rust. Links and the active nav item only. 5.6:1 |
 | `--accent-light` | `#f5a685` | Hover |
+| `--accent-2` | `#7fc4b2` | Teal. Structure: diagram arrowheads, state arrows, fact markers, actor names. 6.9:1 |
+| `--accent-3` | `#edc688` | Sand. Data: step numbers, the role line in the rail. 8.6:1 |
 
-One accent only, and it is warm rust rather than the blue or teal every
-generated portfolio reaches for. The warmth is what keeps this from being
-the default dark theme.
+Three, each with one job, so the page has life without becoming a parade:
+
+- **Rust** is interaction. If it is rust, it is a link. Nothing else is.
+- **Teal** is structure — arrowheads, the markers in a facts strip, the
+  names of the people in an actors diagram.
+- **Sand** is data — the numbers down the side of a sequence, the role line
+  under the name.
+
+The section bar runs rust into teal, which is the only gradient anywhere.
+
+Rust rather than the blue every portfolio reaches for; teal and sand rather
+than a second and third blue.
 
 No success/warning/error colours: the site has no forms and no states.
 Project status is set in type, not colour.

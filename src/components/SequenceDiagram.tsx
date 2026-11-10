@@ -8,7 +8,7 @@ export default function SequenceDiagram({ spec }: { spec: SequenceSpec }) {
                     key={i}
                     className="flex gap-4 border-b border-[var(--rule)] px-5 py-4 last:border-b-0 sm:gap-5 sm:px-6"
                 >
-                    <span className="shrink-0 font-mono text-[12px] text-[var(--accent)]">
+                    <span className="shrink-0 font-mono text-[12px] text-[var(--accent-3)]">
                         {String(i + 1).padStart(2, '0')}
                     </span>
                     <div className="min-w-0">

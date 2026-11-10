@@ -14,6 +14,10 @@
   --rule-strong: #8d8378;
   --accent: #ef8a60;
   --accent-light: #f5a685;
+  /* Two more, so the page has some life in it without becoming a parade.
+     Teal marks structure, sand marks data. Neither is ever used for a link. */
+  --accent-2: #7fc4b2;
+  --accent-3: #edc688;
   --accent-wash: rgba(224, 122, 82, 0.22);
   --paper-dim: #9b9289;
 
@@ -27,6 +31,8 @@
 }
 
 @theme inline {
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
   --color-rail: var(--rail);
   --color-paper: var(--paper);
   --color-paper-raised: var(--paper-raised);
@@ -137,7 +143,7 @@ body {
 .section-bar {
   width: 64px;
   height: 2px;
-  background: var(--rule-strong);
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
 }
 
 .prose-link {

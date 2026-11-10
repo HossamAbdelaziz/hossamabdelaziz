@@ -12,7 +12,7 @@ export default function ActorsDiagram({ spec }: { spec: ActorsSpec }) {
         >
             {spec.actors.map((actor) => (
                 <div key={actor.name} className="bg-[var(--paper-raised)] px-5 py-5">
-                    <p className="font-mono text-[12px] tracking-[0.08em] text-[var(--accent)] uppercase">
+                    <p className="font-mono text-[12px] tracking-[0.08em] text-[var(--accent-2)] uppercase">
                         {actor.name}
                     </p>
                     <ul className="mt-4 space-y-2.5">

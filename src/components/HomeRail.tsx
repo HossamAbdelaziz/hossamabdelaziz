@@ -31,7 +31,7 @@ export default function HomeRail() {
                     Abdelaziz
                 </h1>
 
-                <p className="mt-4 font-mono text-[12px] tracking-[0.12em] text-[var(--accent)] uppercase">
+                <p className="mt-4 font-mono text-[12px] tracking-[0.12em] text-[var(--accent-3)] uppercase">
                     Software developer
                 </p>
 

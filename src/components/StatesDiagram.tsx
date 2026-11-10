@@ -24,7 +24,7 @@ export default function StatesDiagram({ spec }: { spec: StatesSpec }) {
                         </div>
                         {spec.linear && i < spec.states.length - 1 && (
                             <span
-                                className="flex shrink-0 items-center justify-center px-2 text-[var(--accent)] sm:px-3"
+                                className="flex shrink-0 items-center justify-center px-2 text-[var(--accent-2)] sm:px-3"
                                 aria-hidden
                             >
                                 <span className="sm:hidden">↓</span>

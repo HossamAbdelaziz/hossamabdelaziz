@@ -101,7 +101,7 @@ export default function FlowDiagram({
                             markerHeight="6"
                             orient="auto-start-reverse"
                         >
-                            <path d="M 0 1 L 7 4 L 0 7 z" fill="var(--accent)" />
+                            <path d="M 0 1 L 7 4 L 0 7 z" fill="var(--accent-2)" />
                         </marker>
                     </defs>
 

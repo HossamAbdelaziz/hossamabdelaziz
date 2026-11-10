@@ -104,8 +104,12 @@ export default async function ProjectPage({
                         {project.facts.map((fact) => (
                             <li
                                 key={fact}
-                                className="border-b border-[var(--rule)] px-5 py-3.5 text-[15px] text-[var(--ink-soft)] last:border-b-0 sm:px-6"
+                                className="flex gap-3.5 border-b border-[var(--rule)] px-5 py-3.5 text-[15px] text-[var(--ink-soft)] last:border-b-0 sm:px-6"
                             >
+                                <span
+                                    className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent-2)]"
+                                    aria-hidden
+                                />
                                 {fact}
                             </li>
                         ))}
