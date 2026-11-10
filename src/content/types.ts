@@ -49,6 +49,13 @@ export interface StatesDiagram {
     kind: 'states';
     title: string;
     caption?: string;
+    /**
+     * True only when the states really do follow one another in order. With
+     * it, arrows are drawn between them; without it they are shown as a set
+     * and the transitions below carry the order. Drawing an arrow where
+     * there is no such move states something false.
+     */
+    linear?: boolean;
     states: { id: string; label: string; role?: string }[];
     transitions: { from: string; to: string; label: string }[];
 }

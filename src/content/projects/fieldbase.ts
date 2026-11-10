@@ -212,6 +212,7 @@ const fieldbase: Project = {
         {
             kind: 'states',
             title: 'What a document can be',
+            linear: true,
             caption:
                 'The lifecycle the numbering rules hang off. Nothing signed is ever rewritten.',
             states: [

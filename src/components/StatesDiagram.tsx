@@ -5,7 +5,11 @@ export default function StatesDiagram({ spec }: { spec: StatesSpec }) {
 
     return (
         <div>
-            <ol className="flex flex-col gap-3 border border-[var(--rule)] bg-[var(--paper-raised)] p-5 sm:flex-row sm:items-stretch sm:gap-0">
+            <ol
+                className={`flex flex-col gap-3 border border-[var(--rule)] bg-[var(--paper-raised)] p-5 sm:flex-row sm:items-stretch ${
+                    spec.linear ? 'sm:gap-0' : 'sm:gap-3'
+                }`}
+            >
                 {spec.states.map((state, i) => (
                     <li key={state.id} className="flex min-w-0 flex-1 items-stretch">
                         <div className="min-w-0 flex-1 border border-[var(--rule)] bg-[var(--rail)] px-4 py-3">
@@ -18,7 +22,7 @@ export default function StatesDiagram({ spec }: { spec: StatesSpec }) {
                                 </p>
                             )}
                         </div>
-                        {i < spec.states.length - 1 && (
+                        {spec.linear && i < spec.states.length - 1 && (
                             <span
                                 className="flex shrink-0 items-center justify-center px-2 text-[var(--accent)] sm:px-3"
                                 aria-hidden
