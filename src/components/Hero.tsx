@@ -1,7 +1,7 @@
 ﻿'use client'
 
 import { motion } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaFileAlt } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'
 import { Typewriter } from 'react-simple-typewriter'
 import Lottie from 'lottie-react'
 import heroAnimation from '@/../public/hero-animation.json'
@@ -83,15 +83,6 @@ export default function Hero() {
                         className="hover:text-white transition"
                     >
                         <FaEnvelope />
-                    </a>
-                    <a
-                        href="/resume.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-white transition flex items-center gap-2 text-sm"
-                    >
-                        <FaFileAlt className="text-lg" />
-                        <span>Resume</span>
                     </a>
                 </motion.div>
 
