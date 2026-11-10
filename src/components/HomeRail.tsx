@@ -14,12 +14,12 @@ export default function HomeRail() {
     return (
         <div className="flex h-full flex-col justify-between">
             <div>
-                <div className="mb-8 h-16 w-16 overflow-hidden rounded-[2px] lg:h-20 lg:w-20">
+                <div className="mx-auto mb-9 h-32 w-32 overflow-hidden rounded-[3px] sm:h-36 sm:w-36 lg:h-40 lg:w-40">
                     <Image
                         src="/images/hossam-portrait.jpg"
                         alt="Hossam Abdelaziz"
-                        width={192}
-                        height={192}
+                        width={320}
+                        height={320}
                         className="h-full w-full object-cover"
                         priority
                     />
