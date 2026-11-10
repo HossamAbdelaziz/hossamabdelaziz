@@ -1,7 +1,4 @@
-'use client';
-
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import type { Diagram as DiagramSpec } from '@/content/types';
+import type { FlowDiagram as FlowSpec } from '@/content/types';
 
 const NODE_W = 168;
 const NODE_H = 56;
@@ -19,45 +16,22 @@ interface Placed {
     y: number;
 }
 
-/** useLayoutEffect warns during SSR; fall back to useEffect on the server. */
-const useIsomorphicLayoutEffect =
-    typeof window !== 'undefined' ? useLayoutEffect : useEffect;
-
-export default function Diagram({ spec }: { spec: DiagramSpec }) {
-    const ref = useRef<HTMLDivElement>(null);
-    const [armed, setArmed] = useState(false);
-    const [shown, setShown] = useState(false);
-
-    // Only hide things once we know scripting works, so the diagram is never
-    // invisible without JS.
-    useIsomorphicLayoutEffect(() => {
-        const reduced = window.matchMedia(
-            '(prefers-reduced-motion: reduce)',
-        ).matches;
-        if (reduced) {
-            setShown(true);
-            return;
-        }
-        setArmed(true);
-    }, []);
-
-    useEffect(() => {
-        if (!armed || shown) return;
-        const el = ref.current;
-        if (!el) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries.some((e) => e.isIntersecting)) {
-                    setShown(true);
-                    observer.disconnect();
-                }
-            },
-            { threshold: 0 },
-        );
-        observer.observe(el);
-        return () => observer.disconnect();
-    }, [armed, shown]);
+/**
+ * Drawn on the server and always visible. An earlier version built itself up
+ * as it scrolled into view, which looked good but left the diagram blank
+ * whenever the reveal did not fire — in a screenshot, in print, on a slow
+ * device. A diagram that is sometimes invisible is worse than one that never
+ * moves.
+ */
+export default function FlowDiagram({
+    spec,
+    idSuffix,
+}: {
+    spec: FlowSpec;
+    /** Keeps the arrowhead marker unique when a page holds several diagrams. */
+    idSuffix: string;
+}) {
+    const markerId = `diagram-arrow-${idSuffix}`;
 
     const placed: Placed[] = [];
     const maxRows = Math.max(...spec.columns.map((c) => c.nodes.length));
@@ -81,17 +55,10 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
     const height = PAD * 2 + TITLE_H + bodyH;
     const byId = new Map(placed.map((p) => [p.id, p]));
 
-    // Columns appear first, then the arrows between them.
-    const nodeDelay = (col: number) => col * 180;
-    const edgeDelay = 180 * spec.columns.length + 120;
-
-    const cls = (base: string) =>
-        armed ? `${base} reveal${shown ? ' is-in' : ''}` : base;
-
     return (
-        <div ref={ref}>
-            {/* Small screens get the pieces as a list; a 660px-wide SVG that
-                scrolls sideways is worse than no diagram on a phone. */}
+        <div>
+            {/* Below xl the content column is narrower than the drawing, so the
+                pieces are listed instead of being squeezed or clipped. */}
             <div className="border border-[var(--rule)] bg-[var(--paper-raised)] xl:hidden">
                 {spec.columns.map((col) => (
                     <div
@@ -122,11 +89,11 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                     viewBox={`0 0 ${width} ${height}`}
                     className="w-full"
                     role="img"
-                    aria-label="System diagram"
+                    aria-label={`Diagram: ${spec.title}`}
                 >
                     <defs>
                         <marker
-                            id="diagram-arrow"
+                            id={markerId}
                             viewBox="0 0 8 8"
                             refX="7"
                             refY="4"
@@ -148,8 +115,6 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                                 fontFamily="var(--font-mono)"
                                 fontSize="9.5"
                                 letterSpacing="1.3"
-                                className={cls('')}
-                                style={{ transitionDelay: `${nodeDelay(ci)}ms` }}
                             >
                                 {col.title.toUpperCase()}
                             </text>
@@ -175,19 +140,13 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                                 fill="none"
                                 stroke="var(--rule-strong)"
                                 strokeWidth={1}
-                                markerEnd="url(#diagram-arrow)"
-                                className={cls('')}
-                                style={{ transitionDelay: `${edgeDelay + i * 60}ms` }}
+                                markerEnd={`url(#${markerId})`}
                             />
                         );
                     })}
 
                     {placed.map((node) => (
-                        <g
-                            key={node.id}
-                            className={cls('')}
-                            style={{ transitionDelay: `${nodeDelay(node.col)}ms` }}
-                        >
+                        <g key={node.id}>
                             <rect
                                 x={node.x}
                                 y={node.y}

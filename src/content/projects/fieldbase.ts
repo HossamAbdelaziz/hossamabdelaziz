@@ -74,62 +74,235 @@ const fieldbase: Project = {
         'Merges to main are gated, and release images are built once in CI rather than on the server. Deploying means the server pulls that prebuilt image and applies migrations in order. New features ship switched off behind flags and are turned on per client after the client has accepted them.',
     ],
 
-    diagram: {
-        columns: [
-            {
-                title: 'Clients',
-                nodes: [
-                    {
-                        id: 'office',
-                        label: 'Office browser',
-                        role: 'Jobs, customers, documents',
-                    },
-                    {
-                        id: 'tech',
-                        label: 'Technician app',
-                        role: 'Installable, queues work offline',
-                    },
-                ],
-            },
-            {
-                title: 'Server',
-                nodes: [
-                    {
-                        id: 'web',
-                        label: 'Web app',
-                        role: 'Next.js pages, behind Caddy',
-                    },
-                    {
-                        id: 'api',
-                        label: 'API',
-                        role: 'NestJS: rules, auth, PDFs',
-                    },
-                ],
-            },
-            {
-                title: 'Data & services',
-                nodes: [
-                    {
-                        id: 'db',
-                        label: 'PostgreSQL',
-                        role: 'Enforces company boundaries',
-                    },
-                    { id: 'queue', label: 'Job queue', role: 'Redis: background work' },
-                    { id: 'files', label: 'File storage', role: 'Photos, signatures, PDFs' },
-                    { id: 'mail', label: 'Email', role: 'Outgoing mail over SMTP' },
-                ],
-            },
-        ],
-        edges: [
-            { from: 'office', to: 'web', label: 'Pages over HTTPS' },
-            { from: 'office', to: 'api', label: 'Everything the office changes' },
-            { from: 'tech', to: 'api', label: 'Queued work, synced when back online' },
-            { from: 'api', to: 'db', label: 'Queries scoped to one company' },
-            { from: 'api', to: 'queue', label: 'Reminders, email, re-rendering PDFs' },
-            { from: 'api', to: 'files', label: 'Uploads under the company’s own prefix' },
-            { from: 'api', to: 'mail', label: 'Outgoing mail' },
-        ],
-    },
+    diagrams: [
+        {
+            kind: 'flow',
+            title: 'One release, two separate deployments',
+            caption:
+                'The same code runs for both clients, but nothing is shared at run time — separate server, separate database, separate domain.',
+            columns: [
+                {
+                    title: 'Source',
+                    nodes: [
+                        {
+                            id: 'repo',
+                            label: 'FieldBase',
+                            role: 'One codebase, one pipeline',
+                        },
+                    ],
+                },
+                {
+                    title: 'Build',
+                    nodes: [
+                        {
+                            id: 'ci',
+                            label: 'CI',
+                            role: 'Checks, then packages a release',
+                        },
+                    ],
+                },
+                {
+                    title: 'Deployments',
+                    nodes: [
+                        {
+                            id: 'alrahden',
+                            label: 'Alrahden',
+                            role: 'Own server and database',
+                        },
+                        {
+                            id: 'firoz',
+                            label: 'Firoz',
+                            role: 'Own server and database',
+                        },
+                    ],
+                },
+            ],
+            edges: [
+                {
+                    from: 'repo',
+                    to: 'ci',
+                    label: 'Every push runs lint, types and tests against a real Postgres',
+                },
+                {
+                    from: 'ci',
+                    to: 'alrahden',
+                    label: 'The server pulls the prebuilt release and applies migrations',
+                },
+                {
+                    from: 'ci',
+                    to: 'firoz',
+                    label: 'The same release, deployed and verified separately',
+                },
+            ],
+        },
+
+        {
+            kind: 'flow',
+            title: 'Inside one deployment',
+            caption:
+                'Everything the office changes goes through the API, and the database decides which company’s rows it is allowed to return.',
+            columns: [
+                {
+                    title: 'Clients',
+                    nodes: [
+                        {
+                            id: 'office',
+                            label: 'Office browser',
+                            role: 'Jobs, customers, documents',
+                        },
+                        {
+                            id: 'tech',
+                            label: 'Technician app',
+                            role: 'Installable, queues work offline',
+                        },
+                    ],
+                },
+                {
+                    title: 'Server',
+                    nodes: [
+                        {
+                            id: 'web',
+                            label: 'Web app',
+                            role: 'Next.js pages, behind Caddy',
+                        },
+                        { id: 'api', label: 'API', role: 'NestJS: rules, auth, PDFs' },
+                    ],
+                },
+                {
+                    title: 'Data & services',
+                    nodes: [
+                        {
+                            id: 'db',
+                            label: 'PostgreSQL',
+                            role: 'Enforces company boundaries',
+                        },
+                        { id: 'queue', label: 'Job queue', role: 'Redis: background work' },
+                        {
+                            id: 'files',
+                            label: 'File storage',
+                            role: 'Photos, signatures, PDFs',
+                        },
+                        { id: 'mail', label: 'Email', role: 'Outgoing mail over SMTP' },
+                    ],
+                },
+            ],
+            edges: [
+                { from: 'office', to: 'web', label: 'Pages over HTTPS' },
+                { from: 'office', to: 'api', label: 'Everything the office changes' },
+                {
+                    from: 'tech',
+                    to: 'api',
+                    label: 'Queued work, synced when back online',
+                },
+                { from: 'api', to: 'db', label: 'Queries scoped to one company' },
+                {
+                    from: 'api',
+                    to: 'queue',
+                    label: 'Reminders, email, re-rendering PDFs',
+                },
+                {
+                    from: 'api',
+                    to: 'files',
+                    label: 'Uploads under the company’s own prefix',
+                },
+                { from: 'api', to: 'mail', label: 'Outgoing mail' },
+            ],
+        },
+
+        {
+            kind: 'states',
+            title: 'What a document can be',
+            caption:
+                'The lifecycle the numbering rules hang off. Nothing signed is ever rewritten.',
+            states: [
+                { id: 'draft', label: 'Draft', role: 'No number yet' },
+                { id: 'final', label: 'Final', role: 'Numbered and signed' },
+                { id: 'cancelled', label: 'Cancelled', role: 'Keeps its number' },
+            ],
+            transitions: [
+                {
+                    from: 'draft',
+                    to: 'final',
+                    label: 'The number is drawn inside the same transaction that marks it final, so a failure undoes both.',
+                },
+                {
+                    from: 'draft',
+                    to: 'draft',
+                    label: 'A draft can be edited or thrown away freely, because it has never held a number.',
+                },
+                {
+                    from: 'final',
+                    to: 'cancelled',
+                    label: 'A cancelled document keeps its number and stays in the book, so the sequence never gains a gap.',
+                },
+                {
+                    from: 'final',
+                    to: 'final',
+                    label: 'A correction appends a new version rather than editing the old one. Every earlier version stays exactly as it was signed.',
+                },
+            ],
+        },
+
+        {
+            kind: 'sequence',
+            title: 'A technician with no signal',
+            caption:
+                'How work recorded offline reaches the server exactly once, even when the reply is lost.',
+            steps: [
+                {
+                    actor: 'Technician app',
+                    text: 'The visit is written to local storage straight away, so the technician is never blocked by the network.',
+                },
+                {
+                    actor: 'Technician app',
+                    text: 'A key is drawn for that action before it is ever sent, and stays with it in the queue.',
+                },
+                {
+                    actor: 'Technician app → API',
+                    text: 'When the signal returns, the queue replays in order, each item carrying its key.',
+                },
+                {
+                    actor: 'API',
+                    text: 'A key it has already seen returns the original answer again instead of writing a second time.',
+                },
+                {
+                    actor: 'API → Technician app',
+                    text: 'The item leaves the queue only on a confirmed write, so a lost reply means a safe retry rather than a duplicate.',
+                },
+            ],
+        },
+
+        {
+            kind: 'actors',
+            title: 'Who uses it',
+            actors: [
+                {
+                    name: 'Office staff',
+                    can: [
+                        'Schedule and assign the day’s work',
+                        'Raise and finalise documents',
+                        'See every job in one live view',
+                    ],
+                },
+                {
+                    name: 'Technician',
+                    can: [
+                        'Take the day’s jobs offline',
+                        'Record what was done on site',
+                        'Capture a signature without a signal',
+                    ],
+                },
+                {
+                    name: 'Manager',
+                    can: [
+                        'See across branches',
+                        'Approve corrections',
+                        'Cannot approve their own request',
+                    ],
+                },
+            ],
+        },
+    ],
 };
 
 export default fieldbase;

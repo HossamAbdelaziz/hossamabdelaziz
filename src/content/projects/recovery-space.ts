@@ -92,8 +92,13 @@ const recoverySpace: Project = {
         'Database changes run against a throwaway local database first, then go to production one at a time, each with a query before and after proving it landed. Phone updates ship over the air only after confirming the native code is unchanged, and each one has a stated way back.',
     ],
 
-    diagram: {
-        columns: [
+    diagrams: [
+        {
+            kind: 'flow',
+            title: 'How the pieces fit together',
+            caption:
+                'The phone app talks to the database directly for reading and to the server for anything that needs a check.',
+            columns: [
             {
                 title: 'Clients',
                 nodes: [
@@ -119,7 +124,7 @@ const recoverySpace: Project = {
                 ],
             },
         ],
-        edges: [
+            edges: [
             { from: 'mobile', to: 'supabase', label: 'Sign-in, reads, and some direct writes' },
             { from: 'mobile', to: 'server', label: 'Messages and anything needing a check' },
             { from: 'web', to: 'server', label: 'Dashboard and admin actions' },
@@ -131,8 +136,9 @@ const recoverySpace: Project = {
             { from: 'server', to: 'resend', label: 'Transactional email' },
             { from: 'server', to: 'redis', label: 'Is this user over the limit?' },
             { from: 'eas', to: 'mobile', label: 'New app code, over the air' },
-        ],
-    },
+            ],
+        },
+    ],
 };
 
 export default recoverySpace;

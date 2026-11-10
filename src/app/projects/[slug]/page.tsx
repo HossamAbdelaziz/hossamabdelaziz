@@ -7,7 +7,7 @@ import { hasCaseStudy, type Project } from '@/content/types';
 import SplitLayout from '@/components/SplitLayout';
 import CaseRail from '@/components/CaseRail';
 import SectionLabel from '@/components/SectionLabel';
-import Diagram from '@/components/Diagram';
+import Diagrams from '@/components/Diagrams';
 import type { RailNavItem } from '@/components/RailNav';
 
 export function generateStaticParams() {
@@ -41,7 +41,10 @@ function sectionsOf(project: Project): RailNavItem[] {
             Boolean(project.architecture?.length),
             { id: 'architecture', label: 'Architecture' },
         ],
-        [Boolean(project.diagram), { id: 'diagram', label: 'How it fits' }],
+        [
+            Boolean(project.diagrams?.length),
+            { id: 'diagram', label: 'How it fits' },
+        ],
         [Boolean(project.tradeoffs?.length), { id: 'tradeoffs', label: 'Trade-offs' }],
         [Boolean(project.hardest?.length), { id: 'hardest', label: 'Hardest problem' }],
         [Boolean(project.testing?.length), { id: 'testing', label: 'Testing' }],
@@ -129,11 +132,9 @@ export default async function ProjectPage({
                 </Section>
             )}
 
-            {project.diagram && (
+            {project.diagrams && project.diagrams.length > 0 && (
                 <Section id="diagram" label="How it fits together">
-                    <div className="mt-8">
-                        <Diagram spec={project.diagram} />
-                    </div>
+                    <Diagrams specs={project.diagrams} />
                 </Section>
             )}
 

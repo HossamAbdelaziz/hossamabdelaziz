@@ -34,6 +34,48 @@ export interface DiagramEdge {
     label: string;
 }
 
+/** Boxes in columns with arrows between them. The default shape. */
+export interface FlowDiagram {
+    kind: 'flow';
+    title: string;
+    /** One line under the title saying what the reader is looking at. */
+    caption?: string;
+    columns: DiagramColumn[];
+    edges: DiagramEdge[];
+}
+
+/** A lifecycle: what something can be, and how it moves between those. */
+export interface StatesDiagram {
+    kind: 'states';
+    title: string;
+    caption?: string;
+    states: { id: string; label: string; role?: string }[];
+    transitions: { from: string; to: string; label: string }[];
+}
+
+/** Ordered steps, each belonging to one participant. */
+export interface SequenceDiagram {
+    kind: 'sequence';
+    title: string;
+    caption?: string;
+    steps: { actor: string; text: string }[];
+}
+
+/** Who uses it and what each of them can do. */
+export interface ActorsDiagram {
+    kind: 'actors';
+    title: string;
+    caption?: string;
+    actors: { name: string; can: string[] }[];
+}
+
+export type ProjectDiagram =
+    | FlowDiagram
+    | StatesDiagram
+    | SequenceDiagram
+    | ActorsDiagram;
+
+/** @deprecated use ProjectDiagram[] on `diagrams`. */
 export interface Diagram {
     columns: DiagramColumn[];
     edges: DiagramEdge[];
@@ -74,7 +116,8 @@ export interface Project {
     hardest?: string[];
     /** Paragraphs. Omit until it can be defended in detail. */
     testing?: string[];
-    diagram?: Diagram;
+    /** One or more drawings. A bigger system usually needs more than one. */
+    diagrams?: ProjectDiagram[];
     photo?: ProjectPhoto;
     /** Shown on the home page beside the project. Omit for white-label work. */
     cover?: ProjectPhoto;
