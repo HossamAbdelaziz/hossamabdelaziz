@@ -126,10 +126,6 @@ left-aligned, always.
 
 ---
 
-## Shape and depth
-
-**Radius: 0** for everything structural. 2px on images and the portrait.
-
 ## Texture
 
 The flat field of colour was the thing that still looked unfinished, so
