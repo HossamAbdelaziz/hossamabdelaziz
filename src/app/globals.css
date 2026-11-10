@@ -1,30 +1,225 @@
 @import "tailwindcss";
 
+/* Tokens — see docs/DESIGN.md. Editorial: warm paper, serif prose,
+   hairline rules, one rust accent, no shadows, radius 0. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Deep blue ink. The rail is the deeper tone; content sits a step
+     lighter. Rust, teal and sand all sit on top of it. */
+  --rail: #1d2838;
+  --paper: #283546;
+  --paper-raised: #323f50;
+  --ink: #f4f6f9;
+  --ink-soft: #dde3ea;
+  --ink-faint: #aeb6c2;
+  --rule: #3c4a5c;
+  --rule-strong: #7a8798;
+  --accent: #f59d77;
+  --accent-light: #fbb595;
+  /* Two more, so the page has some life in it without becoming a parade.
+     Teal marks structure, sand marks data. Neither is ever used for a link. */
+  --accent-2: #8ccfbc;
+  --accent-3: #f0cd93;
+  --accent-wash: rgba(245, 157, 119, 0.24);
+  --paper-dim: #9b9289;
+
+  --font-serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --w-page: 1080px;
+  --w-read: 680px;
+  --w-wide: 880px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-rail: var(--rail);
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 html {
   scroll-behavior: smooth;
+  background: var(--paper);
+}
+
+/* A little grain, so the background is not a flat field of colour. Drawn
+   by the browser from an SVG filter — nothing to download. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Type roles ---- */
+
+.t-display,
+.t-h1,
+.t-h2,
+.t-h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+.t-display {
+  font-size: 38px;
+  line-height: 1.06;
+}
+.t-h1 {
+  font-size: 32px;
+  line-height: 1.12;
+}
+.t-h2 {
+  font-size: 24px;
+  line-height: 1.22;
+}
+.t-h3 {
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+@media (min-width: 640px) {
+  .t-display {
+    font-size: 54px;
+  }
+  .t-h1 {
+    font-size: 42px;
+  }
+  .t-h2 {
+    font-size: 29px;
+  }
+  .t-h3 {
+    font-size: 20px;
+  }
+}
+
+/* Long-form reading. 68ch measure is the point of the whole direction. */
+.t-prose {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 68ch;
+}
+@media (min-width: 640px) {
+  .t-prose {
+    font-size: 19px;
+  }
+}
+
+.t-prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.t-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.t-meta {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+/* ---- Structure ---- */
+
+.section-bar {
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.prose-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.prose-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.rail-texture {
+  position: relative;
+}
+
+/* A hairline grid behind the rail, fading out downwards. */
+.rail-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, black, transparent 78%);
+  -webkit-mask-image: linear-gradient(180deg, black, transparent 78%);
+}
+
+.rail-link {
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s;
+}
+.rail-link:hover {
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--accent-wash);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
