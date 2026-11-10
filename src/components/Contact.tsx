@@ -1,60 +1,50 @@
-﻿'use client';
-import { motion } from 'framer-motion';
-import { FaEnvelope, FaPhoneAlt, FaLinkedin } from 'react-icons/fa';
+import { FaEnvelope, FaLinkedin, FaGithub } from 'react-icons/fa';
 
-const Contact = () => {
+const items = [
+    {
+        href: 'mailto:hossam.anwar.aziz@gmail.com',
+        label: 'hossam.anwar.aziz@gmail.com',
+        Icon: FaEnvelope,
+    },
+    {
+        href: 'https://www.linkedin.com/in/Hossam-Anwar-Abdelaziz',
+        label: 'linkedin.com/in/Hossam-Anwar-Abdelaziz',
+        Icon: FaLinkedin,
+    },
+    {
+        href: 'https://github.com/HossamAbdelaziz',
+        label: 'github.com/HossamAbdelaziz',
+        Icon: FaGithub,
+    },
+];
+
+export default function Contact() {
     return (
-        <section id="contact" className="py-20 px-6 max-w-6xl mx-auto">
-            <motion.h2
-                className="text-4xl font-bold text-center mb-6"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                Contact Me
-            </motion.h2>
+        <section id="contact" className="mx-auto max-w-5xl px-6 py-20">
+            <h2 className="text-sm font-semibold tracking-[0.14em] text-[var(--dim)] uppercase">
+                Contact
+            </h2>
 
-            <motion.p
-                className="text-center text-gray-300 mb-10 text-lg"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-            >
-                I'm open to full-time roles, freelance opportunities, and collaborations. Let’s connect!
-            </motion.p>
+            <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-[var(--muted)]">
+                Open to a Summer 2027 software developer internship or co-op in the
+                Greater Toronto Area.
+            </p>
 
-            <div className="flex flex-col sm:flex-row sm:justify-center sm:space-x-12 items-center space-y-6 sm:space-y-0 text-lg text-gray-300">
-                {/* Email */}
-                <a
-                    href="mailto:hossam.anwar.aziz@gmail.com"
-                    className="flex items-center gap-2 hover:text-white transition"
-                >
-                    <FaEnvelope className="text-xl" color="#EA4335" />
-                    hossam.anwar.aziz@gmail.com
-                </a>
-
-                {/* Phone */}
-                <a
-                    href="tel:+11234567890"
-                    className="flex items-center gap-2 hover:text-white transition"
-                >
-                    <FaPhoneAlt className="text-xl" color="#34A853" />
-                    +1 (647) 675-3343
-                </a>
-
-                {/* LinkedIn */}
-                <a
-                    href="https://www.linkedin.com/in/Hossam-Anwar-Abdelaziz"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 hover:text-white transition"
-                >
-                    <FaLinkedin className="text-xl" color="#0077B5" />
-                    linkedin.com/in/Hossam-Anwar-Abdelaziz
-                </a>
-            </div>
+            <ul className="mt-8 space-y-3">
+                {items.map(({ href, label, Icon }) => (
+                    <li key={label}>
+                        <a
+                            href={href}
+                            target={href.startsWith('http') ? '_blank' : undefined}
+                            rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                            className="inline-flex items-center gap-3 text-[15px] text-[var(--muted)] transition hover:text-[var(--text)]"
+                        >
+                            <Icon className="text-[var(--dim)]" />
+                            {label}
+                        </a>
+                    </li>
+                ))}
+            </ul>
         </section>
     );
-};
-
-export default Contact;
+}

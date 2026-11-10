@@ -1,68 +1,43 @@
-// src/app/layout.tsx
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import '@fontsource-variable/inter';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import GTag from '@/components/GTag';
 
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+const title = 'Hossam Abdelaziz — Software Developer';
+const description =
+    'Software developer and computer science student at Sheridan College. Three live products: a bilingual coaching platform on web, iOS and Android, a field-service platform used daily in two countries, and a vehicle rental system. Open to a Summer 2027 internship or co-op.';
 
 export const metadata: Metadata = {
-  title: 'Hossam Abdelaziz | Frontend Developer Portfolio',
-  description:
-    'Official portfolio of Hossam Abdelaziz. Frontend developer specializing in React, Next.js, TypeScript, and modern web UI.',
-  metadataBase: new URL('https://www.hossamabdelaziz.com'),
-  openGraph: {
-    title: 'Hossam Abdelaziz | Frontend Developer Portfolio',
-    description:
-      'Showcasing modern web projects using React, Next.js, TypeScript, Firebase, and more.',
-    url: 'https://www.hossamabdelaziz.com',
-    siteName: 'Hossam Abdelaziz Portfolio',
-    images: [
-      {
-        url: '/og.png', // Optional: Add this to public folder
-        width: 1200,
-        height: 630,
-        alt: 'Hossam Abdelaziz Portfolio Preview',
-      },
-    ],
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Hossam Abdelaziz | Frontend Developer Portfolio',
-    description:
-      'Frontend developer building interactive websites using React and Next.js.',
-    images: ['/og.png'],
-  },
-  icons: {
-    icon: '/favicon.ico',
-  },
+    title,
+    description,
+    metadataBase: new URL('https://www.hossamabdelaziz.com'),
+    alternates: { canonical: '/' },
+    openGraph: {
+        title,
+        description,
+        url: 'https://www.hossamabdelaziz.com',
+        siteName: 'Hossam Abdelaziz',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+    },
+    icons: { icon: '/favicon.ico' },
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-950 text-white`}
-      >
-        {children}
-        <GTag />
-        <Analytics />
-      </body>
-    </html>
-  );
+    children,
+}: Readonly<{ children: React.ReactNode }>) {
+    return (
+        <html lang="en">
+            <body className="antialiased">
+                {children}
+                <GTag />
+                <Analytics />
+            </body>
+        </html>
+    );
 }

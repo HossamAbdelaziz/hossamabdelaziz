@@ -1,130 +1,92 @@
-﻿'use client'
+﻿import Image from 'next/image';
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 
-import { motion } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'
-import { Typewriter } from 'react-simple-typewriter'
-import Lottie from 'lottie-react'
-import heroAnimation from '@/../public/hero-animation.json'
-
+const links = [
+    {
+        href: 'https://github.com/HossamAbdelaziz',
+        label: 'GitHub',
+        Icon: FaGithub,
+    },
+    {
+        href: 'https://www.linkedin.com/in/Hossam-Anwar-Abdelaziz',
+        label: 'LinkedIn',
+        Icon: FaLinkedin,
+    },
+    {
+        href: 'mailto:hossam.anwar.aziz@gmail.com',
+        label: 'Email',
+        Icon: FaEnvelope,
+    },
+];
 
 export default function Hero() {
     return (
-        <section
-            id="hero"
-            className="min-h-screen flex items-center justify-center px-6 bg-gray-950 text-white"
-        >
-            <div className="max-w-4xl w-full text-center">
-                <Lottie
-                    animationData={heroAnimation}
-                    loop={true}
-                    className="w-40 sm:w-60 md:w-80 mx-auto mb-8"
+        <section id="top" className="relative overflow-hidden">
+            <div className="field" aria-hidden />
+            <div className="grid-lines" aria-hidden />
 
-                />
-                {/* Name */}
-                <motion.h1
-                    className="text-5xl md:text-6xl font-bold mb-4"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    Hossam Abdelaziz
-                </motion.h1>
+            <div className="relative mx-auto max-w-5xl px-6 pt-24 pb-20 sm:pt-32 sm:pb-24">
+                <div className="flex flex-col-reverse items-start gap-10 sm:flex-row sm:items-center sm:gap-14">
+                    <div className="min-w-0 flex-1">
+                        <div className="rule-accent mb-7 h-[3px] w-16 rounded" />
 
-                {/* Typing Subtitle */}
-                <motion.h2
-                    className="text-xl md:text-2xl text-indigo-400 mb-4 h-8"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                >
-                    <Typewriter
-                        words={[
-                            'Frontend Developer',
-                            'React & Next.js Specialist',
-                            'Clean UI Enthusiast',
-                            'Code with Purpose',
-                            'Software Developer',
-                        ]}
+                        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                            Hossam Abdelaziz
+                        </h1>
 
-                        loop={true}
-                        cursor
-                        cursorStyle="|"
-                        typeSpeed={70}
-                        deleteSpeed={50}
-                        delaySpeed={1500}
-                    />
-                </motion.h2>
+                        <p className="mt-3 text-xl font-medium text-[var(--muted)] sm:text-2xl">
+                            Software developer
+                        </p>
 
-                {/* Icon Links */}
-                <motion.div
-                    className="flex justify-center gap-6 text-2xl text-gray-300 mb-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.5 }}
-                >
-                    <a
-                        href="https://github.com/HossamAbdelaziz?tab=repositories"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-white transition"
-                    >
-                        <FaGithub />
-                    </a>
-                    <a
-                        href="https://www.linkedin.com/in/Hossam-Anwar-Abdelaziz"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-white transition"
-                    >
-                        <FaLinkedin />
-                    </a>
-                    <a
-                        href="mailto:hossam.anwar.aziz@gmail.com"
-                        className="hover:text-white transition"
-                    >
-                        <FaEnvelope />
-                    </a>
-                </motion.div>
+                        <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-[var(--muted)]">
+                            I build and run three products that real people use every
+                            day — on the web, on iPhone and on Android. I work on all of
+                            it: the data model, the back end, the apps and the
+                            deployments.
+                        </p>
 
+                        <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-[var(--muted)]">
+                            Computer science student at Sheridan College, Ontario.{' '}
+                            <span className="text-[var(--text)]">
+                                Open to a Summer 2027 software developer internship or
+                                co-op.
+                            </span>
+                        </p>
 
+                        <div className="mt-8 flex flex-wrap items-center gap-3">
+                            {links.map(({ href, label, Icon }) => (
+                                <a
+                                    key={label}
+                                    href={href}
+                                    target={href.startsWith('http') ? '_blank' : undefined}
+                                    rel={
+                                        href.startsWith('http')
+                                            ? 'noopener noreferrer'
+                                            : undefined
+                                    }
+                                    className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-[var(--text)]"
+                                >
+                                    <Icon className="text-base" />
+                                    {label}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
 
-
-                {/* Description */}
-                <motion.p
-                    className="text-gray-400 mb-10 leading-relaxed text-lg"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.6 }}
-                >
-                    I build fast, elegant, and accessible web interfaces using modern tools like React, Next.js, and Tailwind CSS. My focus is turning ideas into polished user experiences that are intuitive, scalable, and performance-driven.
-                    <br /><br />
-                    I've delivered full-stack solutions including client dashboards, booking systems, and business tools — always driven by clean architecture, thoughtful design, and real-world impact.
-                    <br /><br />
-                    Based in Oakville, Canada. When I’m not coding, I’m playing tennis, exploring tech trends, or creating side projects that solve everyday problems.
-                </motion.p>
-
-                {/* CTA Links */}
-                <motion.div
-                    className="flex flex-wrap justify-center gap-6 text-2xl font-bold"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7, duration: 0.5 }}
-                >
-                    {['Projects', 'Contact'].map((label, index) => (
-                        <motion.a
-                            key={label}
-                            href={`#${label.toLowerCase()}`}
-                            whileHover={{ scale: 1.1 }}
-                            transition={{ type: 'spring', stiffness: 300 }}
-                            className="relative group text-xl md:text-2xl font-semibold text-gray-100"
-                        >
-                            {label}
-                            <span className="block h-[2px] bg-indigo-500 max-w-0 group-hover:max-w-full transition-all duration-300"></span>
-                        </motion.a>
-                    ))}
-
-                </motion.div>
+                    <div className="shrink-0">
+                        <div className="relative h-32 w-32 overflow-hidden rounded-2xl border border-[var(--border-strong)] sm:h-44 sm:w-44">
+                            <Image
+                                src="/images/hossam-portrait.jpg"
+                                alt="Hossam Abdelaziz"
+                                fill
+                                sizes="176px"
+                                className="object-cover"
+                                priority
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-    )
+    );
 }
