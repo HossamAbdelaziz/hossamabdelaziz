@@ -3,16 +3,16 @@
 /* Tokens — see docs/DESIGN.md. Editorial: warm paper, serif prose,
    hairline rules, one rust accent, no shadows, radius 0. */
 :root {
-  /* Slate green, two steps up from the first dark. The rail is the deeper
-     tone; content sits a step lighter. */
-  --rail: #283230;
-  --paper: #36403e;
-  --paper-raised: #404a48;
-  --ink: #f7f6f3;
-  --ink-soft: #e4e1da;
-  --ink-faint: #b9b4ab;
-  --rule: #4f5957;
-  --rule-strong: #8e9995;
+  /* Deep blue ink. The rail is the deeper tone; content sits a step
+     lighter. Rust, teal and sand all sit on top of it. */
+  --rail: #1d2838;
+  --paper: #283546;
+  --paper-raised: #323f50;
+  --ink: #f4f6f9;
+  --ink-soft: #dde3ea;
+  --ink-faint: #aeb6c2;
+  --rule: #3c4a5c;
+  --rule-strong: #7a8798;
   --accent: #f59d77;
   --accent-light: #fbb595;
   /* Two more, so the page has some life in it without becoming a parade.
@@ -50,6 +50,23 @@
 html {
   scroll-behavior: smooth;
   background: var(--paper);
+}
+
+/* A little grain, so the background is not a flat field of colour. Drawn
+   by the browser from an SVG filter — nothing to download. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 body {
@@ -155,6 +172,24 @@ body {
 }
 .prose-link:hover {
   text-decoration-thickness: 2px;
+}
+
+.rail-texture {
+  position: relative;
+}
+
+/* A hairline grid behind the rail, fading out downwards. */
+.rail-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, black, transparent 78%);
+  -webkit-mask-image: linear-gradient(180deg, black, transparent 78%);
 }
 
 .rail-link {
