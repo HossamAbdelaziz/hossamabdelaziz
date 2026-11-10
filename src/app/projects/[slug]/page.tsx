@@ -31,7 +31,7 @@ export async function generateMetadata({
             url: '/og.png',
             width: 1200,
             height: 630,
-            alt: 'Hossam Abdelaziz — software engineer',
+            alt: 'Hossam Abdelaziz — software developer',
         },
     ];
     return {
