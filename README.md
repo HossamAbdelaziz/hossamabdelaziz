@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-  <a href="https://www.hossamabdelaziz.com"><img src="https://img.shields.io/badge/Portfolio-0B0E14?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio" /></a>
+  <a href="https://www.hossamabdelaziz.com"><img src="https://img.shields.io/badge/Portfolio-1d2838?style=for-the-badge&logo=vercel&logoColor=f0cd93" alt="Portfolio" /></a>
   <a href="https://www.linkedin.com/in/hossam-anwar-abdelaziz"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-  <a href="mailto:hossam.anwar.aziz@gmail.com"><img src="https://img.shields.io/badge/Email-2FD8C8?style=for-the-badge&logo=gmail&logoColor=0B0E14" alt="Email" /></a>
-  <img src="https://img.shields.io/badge/Open%20to-Summer%202027%20Co--op-63B3F2?style=for-the-badge" alt="Open to Summer 2027 co-op" />
+  <a href="mailto:hossam.anwar.aziz@gmail.com"><img src="https://img.shields.io/badge/Email-f59d77?style=for-the-badge&logo=gmail&logoColor=1d2838" alt="Email" /></a>
+  <img src="https://img.shields.io/badge/Open%20to-Summer%202027%20Internship%20or%20Co--op-f0cd93?style=for-the-badge&labelColor=1d2838" alt="Open to Summer 2027 internship or co-op" />
 </p>
 
 ---
