@@ -2,12 +2,11 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
 import { projects, getProject } from '@/content/projects';
 import { hasCaseStudy } from '@/content/types';
 import SiteHeader from '@/components/SiteHeader';
 import Footer from '@/components/Footer';
-import StatusBadge from '@/components/StatusBadge';
+import SectionLabel from '@/components/SectionLabel';
 import Diagram from '@/components/Diagram';
 
 export function generateStaticParams() {
@@ -33,21 +32,28 @@ export async function generateMetadata({
     };
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
-    return (
-        <h2 className="text-sm font-semibold tracking-[0.14em] text-[var(--dim)] uppercase">
-            {children}
-        </h2>
-    );
-}
-
 function Prose({ paragraphs }: { paragraphs: string[] }) {
     return (
-        <div className="mt-5 space-y-5 text-[17px] leading-relaxed text-[var(--muted)]">
+        <div className="t-prose mt-8 space-y-5">
             {paragraphs.map((text, i) => (
                 <p key={i}>{text}</p>
             ))}
         </div>
+    );
+}
+
+function Section({
+    label,
+    children,
+}: {
+    label: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <section className="border-t border-[var(--rule)] py-14 sm:py-20">
+            <SectionLabel>{label}</SectionLabel>
+            {children}
+        </section>
     );
 }
 
@@ -64,169 +70,134 @@ export default async function ProjectPage({
         <>
             <SiteHeader />
 
-            <main>
-                <section className="relative overflow-hidden border-b border-[var(--border)]">
-                    <div className="field" aria-hidden />
-                    <div className="relative mx-auto max-w-3xl px-6 pt-14 pb-14">
-                        <Link
-                            href="/#work"
-                            className="inline-flex items-center gap-2 text-sm text-[var(--dim)] transition hover:text-[var(--text)]"
-                        >
-                            <FaArrowLeft className="text-xs" />
-                            All work
-                        </Link>
+            <main className="mx-auto max-w-[var(--w-wide)] px-5 sm:px-6">
+                <header className="pt-12 pb-14 sm:pt-16">
+                    <Link
+                        href="/#work"
+                        className="t-meta underline-offset-4 hover:underline"
+                    >
+                        ← All work
+                    </Link>
 
-                        <div className="mt-8 flex flex-wrap items-center gap-3">
-                            <StatusBadge status={project.status} />
-                            <span className="text-xs text-[var(--dim)]">{project.dates}</span>
-                        </div>
+                    <h1 className="t-h1 mt-8">{project.name}</h1>
 
-                        <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-                            {project.name}
-                        </h1>
+                    <p className="t-prose mt-4">{project.tagline}</p>
 
-                        <p className="mt-4 max-w-2xl text-xl leading-relaxed text-[var(--muted)]">
-                            {project.tagline}
+                    <p className="t-meta mt-6">
+                        {project.dates}
+                        {'  ·  '}
+                        {project.status === 'live' ? 'Live' : 'In progress'}
+                    </p>
+
+                    {project.links && project.links.length > 0 && (
+                        <p className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[15px]">
+                            {project.links.map((link) => (
+                                <a
+                                    key={link.href}
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="prose-link"
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
                         </p>
-
-                        {project.links && project.links.length > 0 && (
-                            <div className="mt-7 flex flex-wrap gap-2.5">
-                                {project.links.map((link) => (
-                                    <a
-                                        key={link.href}
-                                        href={link.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2 text-sm text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-[var(--text)]"
-                                    >
-                                        {link.label}
-                                        <FaExternalLinkAlt className="text-[10px]" />
-                                    </a>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                </section>
-
-                <div className="mx-auto max-w-3xl px-6">
-                    {project.facts && project.facts.length > 0 && (
-                        <section className="border-b border-[var(--border)] py-10">
-                            <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                                {project.facts.map((fact) => (
-                                    <li
-                                        key={fact}
-                                        className="flex gap-3 text-[15px] leading-relaxed text-[var(--muted)]"
-                                    >
-                                        <span
-                                            className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[var(--accent-2)]"
-                                            aria-hidden
-                                        />
-                                        {fact}
-                                    </li>
-                                ))}
-                            </ul>
-                        </section>
                     )}
+                </header>
 
-                    {project.problem && (
-                        <section className="py-14">
-                            <SectionHeading>The problem</SectionHeading>
-                            <Prose paragraphs={project.problem} />
-                        </section>
-                    )}
+                {project.facts && project.facts.length > 0 && (
+                    <ul className="border border-[var(--rule)] bg-[var(--paper-raised)]">
+                        {project.facts.map((fact) => (
+                            <li
+                                key={fact}
+                                className="border-b border-[var(--rule)] px-5 py-3.5 text-[15px] text-[var(--ink-soft)] last:border-b-0 sm:px-6"
+                            >
+                                {fact}
+                            </li>
+                        ))}
+                    </ul>
+                )}
 
-                    {project.architecture && project.architecture.length > 0 && (
-                        <section className="border-t border-[var(--border)] py-14">
-                            <SectionHeading>Architecture</SectionHeading>
-                            <div className="mt-6 space-y-7">
-                                {project.architecture.map((note) => (
-                                    <div key={note.title}>
-                                        <h3 className="text-[17px] font-semibold text-[var(--text)]">
-                                            {note.title}
-                                        </h3>
-                                        <p className="mt-2 text-[17px] leading-relaxed text-[var(--muted)]">
-                                            {note.body}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                    )}
+                {project.problem && (
+                    <Section label="The problem">
+                        <Prose paragraphs={project.problem} />
+                    </Section>
+                )}
 
-                    {project.diagram && (
-                        <section className="border-t border-[var(--border)] py-14">
-                            <SectionHeading>How it fits together</SectionHeading>
-                            <div className="mt-7">
-                                <Diagram spec={project.diagram} />
-                            </div>
-                        </section>
-                    )}
+                {project.architecture && project.architecture.length > 0 && (
+                    <Section label="Architecture">
+                        <div className="mt-8 max-w-[var(--w-read)] space-y-8">
+                            {project.architecture.map((note) => (
+                                <div key={note.title}>
+                                    <h3 className="t-h3">{note.title}</h3>
+                                    <p className="t-prose mt-2">{note.body}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </Section>
+                )}
 
-                    {project.tradeoffs && project.tradeoffs.length > 0 && (
-                        <section className="border-t border-[var(--border)] py-14">
-                            <SectionHeading>Trade-offs</SectionHeading>
-                            <Prose paragraphs={project.tradeoffs} />
-                        </section>
-                    )}
+                {project.diagram && (
+                    <Section label="How it fits together">
+                        <div className="mt-8">
+                            <Diagram spec={project.diagram} />
+                        </div>
+                    </Section>
+                )}
 
-                    {project.hardest && project.hardest.length > 0 && (
-                        <section className="border-t border-[var(--border)] py-14">
-                            <SectionHeading>The hardest problem</SectionHeading>
-                            <Prose paragraphs={project.hardest} />
-                        </section>
-                    )}
+                {project.tradeoffs && project.tradeoffs.length > 0 && (
+                    <Section label="Trade-offs">
+                        <Prose paragraphs={project.tradeoffs} />
+                    </Section>
+                )}
 
-                    {project.testing && project.testing.length > 0 && (
-                        <section className="border-t border-[var(--border)] py-14">
-                            <SectionHeading>Testing and release</SectionHeading>
-                            <Prose paragraphs={project.testing} />
-                        </section>
-                    )}
+                {project.hardest && project.hardest.length > 0 && (
+                    <Section label="The hardest problem">
+                        <Prose paragraphs={project.hardest} />
+                    </Section>
+                )}
 
-                    {project.photo && (
-                        <section className="border-t border-[var(--border)] py-14">
-                            <div className="overflow-hidden rounded-xl border border-[var(--border)]">
-                                <Image
-                                    src={project.photo.src}
-                                    alt={project.photo.alt}
-                                    width={1600}
-                                    height={686}
-                                    className="h-auto w-full"
-                                />
-                            </div>
+                {project.testing && project.testing.length > 0 && (
+                    <Section label="Testing and release">
+                        <Prose paragraphs={project.testing} />
+                    </Section>
+                )}
+
+                {project.photo && (
+                    <Section label="">
+                        <figure className="mt-2">
+                            <Image
+                                src={project.photo.src}
+                                alt={project.photo.alt}
+                                width={1600}
+                                height={686}
+                                className="h-auto w-full rounded-[2px] border border-[var(--rule)]"
+                            />
                             {project.photo.caption && (
-                                <p className="mt-3 text-sm text-[var(--dim)]">
+                                <figcaption className="t-meta mt-3">
                                     {project.photo.caption}
-                                </p>
+                                </figcaption>
                             )}
-                        </section>
-                    )}
+                        </figure>
+                    </Section>
+                )}
 
-                    {project.stack && project.stack.length > 0 && (
-                        <section className="border-t border-[var(--border)] py-14">
-                            <SectionHeading>Built with</SectionHeading>
-                            <ul className="mt-6 flex flex-wrap gap-2">
-                                {project.stack.map((tech) => (
-                                    <li
-                                        key={tech}
-                                        className="rounded-full border border-[var(--border)] px-3 py-1.5 text-[13px] text-[var(--muted)]"
-                                    >
-                                        {tech}
-                                    </li>
-                                ))}
-                            </ul>
-                        </section>
-                    )}
+                {project.stack && project.stack.length > 0 && (
+                    <Section label="Built with">
+                        <p className="t-meta mt-8 max-w-[var(--w-read)] leading-7">
+                            {project.stack.join('  ·  ')}
+                        </p>
+                    </Section>
+                )}
 
-                    <section className="border-t border-[var(--border)] py-14">
-                        <Link
-                            href="/#work"
-                            className="inline-flex items-center gap-2 text-sm text-[var(--accent)] transition hover:text-[var(--accent-2)]"
-                        >
-                            <FaArrowLeft className="text-xs" />
-                            All work
-                        </Link>
-                    </section>
+                <div className="border-t border-[var(--rule)] py-12">
+                    <Link
+                        href="/#work"
+                        className="prose-link text-[15px]"
+                    >
+                        ← All work
+                    </Link>
                 </div>
             </main>
 

@@ -1,89 +1,168 @@
 @import "tailwindcss";
 
-/* Palette carried over from the LinkedIn banner: near-black, blue -> teal. */
+/* Tokens — see docs/DESIGN.md. Editorial: warm paper, serif prose,
+   hairline rules, one rust accent, no shadows, radius 0. */
 :root {
-  --bg: #070b12;
-  --surface: #0d131d;
-  --surface-2: #121a26;
-  --border: #1b2534;
-  --border-strong: #273448;
-  --text: #f4f7fb;
-  --muted: #9db4ce;
-  --dim: #6f87a3;
-  --accent: #63b3f2;
-  --accent-2: #2fd8c8;
+  --paper: #faf8f4;
+  --paper-raised: #f3efe7;
+  --ink: #1a1714;
+  --ink-soft: #4a433c;
+  --ink-faint: #7a7169;
+  --rule: #ded7cb;
+  --rule-strong: #1a1714;
+  --accent: #a33b1f;
+  --accent-wash: #f0e2dc;
+
+  --font-serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --w-page: 1080px;
+  --w-read: 680px;
+  --w-wide: 880px;
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-line: var(--border);
-  --color-line-strong: var(--border-strong);
-  --color-text: var(--text);
-  --color-muted: var(--muted);
-  --color-dim: var(--dim);
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
   --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 html {
   scroll-behavior: smooth;
+  background: var(--paper);
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* The one decorative element, reused from the banner. */
-.field {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(900px 480px at 78% 12%, rgba(60, 130, 215, 0.2), transparent 62%),
-    radial-gradient(620px 420px at 8% 0%, rgba(34, 196, 190, 0.1), transparent 68%);
+/* ---- Type roles ---- */
+
+.t-display,
+.t-h1,
+.t-h2,
+.t-h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.012em;
 }
 
-.grid-lines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: linear-gradient(180deg, black, transparent 72%);
-  -webkit-mask-image: linear-gradient(180deg, black, transparent 72%);
+.t-display {
+  font-size: 38px;
+  line-height: 1.06;
+}
+.t-h1 {
+  font-size: 32px;
+  line-height: 1.12;
+}
+.t-h2 {
+  font-size: 24px;
+  line-height: 1.22;
+}
+.t-h3 {
+  font-size: 19px;
+  line-height: 1.35;
 }
 
-.rule-accent {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+@media (min-width: 640px) {
+  .t-display {
+    font-size: 54px;
+  }
+  .t-h1 {
+    font-size: 42px;
+  }
+  .t-h2 {
+    font-size: 29px;
+  }
+  .t-h3 {
+    font-size: 20px;
+  }
 }
 
-.text-accent-grad {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Long-form reading. 68ch measure is the point of the whole direction. */
+.t-prose {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 68ch;
+}
+@media (min-width: 640px) {
+  .t-prose {
+    font-size: 19px;
+  }
+}
+
+.t-prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.t-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.t-meta {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+/* ---- Structure ---- */
+
+.section-bar {
+  width: 64px;
+  height: 2px;
+  background: var(--rule-strong);
+}
+
+.prose-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.prose-link:hover {
+  text-decoration-thickness: 2px;
 }
 
 ::selection {
-  background: rgba(99, 179, 242, 0.3);
+  background: var(--accent-wash);
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

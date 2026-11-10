@@ -8,20 +8,21 @@ const nav = [
 
 export default function SiteHeader() {
     return (
-        <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--bg)_82%,transparent)] backdrop-blur">
-            <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <header className="sticky top-0 z-50 border-b border-[var(--rule)] bg-[var(--paper)]">
+            <div className="mx-auto flex max-w-[var(--w-page)] items-baseline justify-between px-5 py-4 sm:px-6">
                 <Link
                     href="/"
-                    className="text-sm font-semibold tracking-tight text-[var(--text)]"
+                    className="font-serif text-[17px] font-semibold tracking-tight text-[var(--ink)]"
+                    style={{ fontFamily: 'var(--font-serif)' }}
                 >
                     Hossam Abdelaziz
                 </Link>
-                <nav className="flex items-center gap-6">
+                <nav className="flex items-center gap-5 sm:gap-7">
                     {nav.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="text-sm text-[var(--muted)] transition hover:text-[var(--text)]"
+                            className="text-[14px] text-[var(--ink-soft)] underline-offset-4 hover:underline"
                         >
                             {item.label}
                         </Link>

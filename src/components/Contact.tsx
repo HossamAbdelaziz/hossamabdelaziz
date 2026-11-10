@@ -1,45 +1,36 @@
-import { FaEnvelope, FaLinkedin, FaGithub } from 'react-icons/fa';
+import SectionLabel from './SectionLabel';
 
 const items = [
-    {
-        href: 'mailto:hossam.anwar.aziz@gmail.com',
-        label: 'hossam.anwar.aziz@gmail.com',
-        Icon: FaEnvelope,
-    },
+    { href: 'mailto:hossam.anwar.aziz@gmail.com', label: 'hossam.anwar.aziz@gmail.com' },
     {
         href: 'https://www.linkedin.com/in/Hossam-Anwar-Abdelaziz',
         label: 'linkedin.com/in/Hossam-Anwar-Abdelaziz',
-        Icon: FaLinkedin,
     },
-    {
-        href: 'https://github.com/HossamAbdelaziz',
-        label: 'github.com/HossamAbdelaziz',
-        Icon: FaGithub,
-    },
+    { href: 'https://github.com/HossamAbdelaziz', label: 'github.com/HossamAbdelaziz' },
 ];
 
 export default function Contact() {
     return (
-        <section id="contact" className="mx-auto max-w-5xl px-6 py-20">
-            <h2 className="text-sm font-semibold tracking-[0.14em] text-[var(--dim)] uppercase">
-                Contact
-            </h2>
+        <section
+            id="contact"
+            className="mx-auto max-w-[var(--w-page)] border-t border-[var(--rule)] px-5 py-16 sm:px-6 sm:py-24"
+        >
+            <SectionLabel>Contact</SectionLabel>
 
-            <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-[var(--muted)]">
+            <p className="t-prose mt-8">
                 Open to a Summer 2027 software developer internship or co-op in the
                 Greater Toronto Area.
             </p>
 
             <ul className="mt-8 space-y-3">
-                {items.map(({ href, label, Icon }) => (
+                {items.map(({ href, label }) => (
                     <li key={label}>
                         <a
                             href={href}
                             target={href.startsWith('http') ? '_blank' : undefined}
                             rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                            className="inline-flex items-center gap-3 text-[15px] text-[var(--muted)] transition hover:text-[var(--text)]"
+                            className="prose-link text-[15px]"
                         >
-                            <Icon className="text-[var(--dim)]" />
                             {label}
                         </a>
                     </li>

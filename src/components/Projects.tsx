@@ -1,21 +1,24 @@
 import { projects } from '@/content/projects';
-import ProjectCard from './ProjectCard';
+import ProjectRow from './ProjectRow';
+import SectionLabel from './SectionLabel';
 
 export default function Projects() {
     return (
-        <section id="work" className="mx-auto max-w-5xl px-6 py-20">
-            <h2 className="text-sm font-semibold tracking-[0.14em] text-[var(--dim)] uppercase">
-                Work
-            </h2>
-            <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-[var(--muted)]">
+        <section
+            id="work"
+            className="mx-auto max-w-[var(--w-page)] border-t border-[var(--rule)] px-5 py-16 sm:px-6 sm:py-24"
+        >
+            <SectionLabel>Work</SectionLabel>
+
+            <p className="t-prose mt-8">
                 Most of this is client code I can&apos;t show. So instead of demos,
                 each one is written up as a case study: the problem, the decision I
                 made and why, and the hardest thing I had to solve.
             </p>
 
-            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            <div className="mt-12 max-w-[var(--w-read)]">
                 {projects.map((project) => (
-                    <ProjectCard key={project.slug} project={project} />
+                    <ProjectRow key={project.slug} project={project} />
                 ))}
             </div>
         </section>

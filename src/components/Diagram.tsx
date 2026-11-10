@@ -1,11 +1,11 @@
 import type { Diagram as DiagramSpec } from '@/content/types';
 
-const NODE_W = 210;
-const NODE_H = 62;
-const NODE_GAP = 20;
-const COL_GAP = 92;
-const TITLE_H = 30;
-const PAD = 8;
+const NODE_W = 196;
+const NODE_H = 58;
+const NODE_GAP = 18;
+const COL_GAP = 88;
+const TITLE_H = 28;
+const PAD = 14;
 
 interface Placed {
     id: string;
@@ -34,7 +34,8 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
         });
     });
 
-    const width = PAD * 2 + spec.columns.length * NODE_W + (spec.columns.length - 1) * COL_GAP;
+    const width =
+        PAD * 2 + spec.columns.length * NODE_W + (spec.columns.length - 1) * COL_GAP;
     const height = PAD * 2 + TITLE_H + bodyH;
     const byId = new Map(placed.map((p) => [p.id, p]));
 
@@ -48,15 +49,15 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
         const ex = forward ? b.x : b.x + NODE_W;
         const sy = a.y + NODE_H / 2;
         const ey = b.y + NODE_H / 2;
-        const bend = forward ? 54 : -54;
+        const bend = forward ? 48 : -48;
 
         return [
             <path
                 key={i}
                 d={`M ${sx} ${sy} C ${sx + bend} ${sy}, ${ex - bend} ${ey}, ${ex} ${ey}`}
                 fill="none"
-                stroke="var(--border-strong)"
-                strokeWidth={1.25}
+                stroke="var(--ink-faint)"
+                strokeWidth={1}
                 markerEnd="url(#diagram-arrow)"
             />,
         ];
@@ -64,10 +65,10 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
 
     return (
         <div>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto border border-[var(--rule)] bg-[var(--paper-raised)]">
                 <svg
                     viewBox={`0 0 ${width} ${height}`}
-                    style={{ minWidth: 680 }}
+                    style={{ minWidth: 660 }}
                     className="w-full"
                     role="img"
                     aria-label="System diagram"
@@ -78,11 +79,11 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                             viewBox="0 0 8 8"
                             refX="7"
                             refY="4"
-                            markerWidth="7"
-                            markerHeight="7"
+                            markerWidth="6"
+                            markerHeight="6"
                             orient="auto-start-reverse"
                         >
-                            <path d="M 0 1 L 7 4 L 0 7 z" fill="var(--border-strong)" />
+                            <path d="M 0 1 L 7 4 L 0 7 z" fill="var(--accent)" />
                         </marker>
                     </defs>
 
@@ -91,11 +92,11 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                             <text
                                 key={ci}
                                 x={PAD + ci * (NODE_W + COL_GAP)}
-                                y={PAD + 14}
-                                fill="var(--dim)"
-                                fontSize="10.5"
-                                letterSpacing="1.4"
-                                fontWeight="600"
+                                y={PAD + 12}
+                                fill="var(--ink-faint)"
+                                fontFamily="var(--font-mono)"
+                                fontSize="9.5"
+                                letterSpacing="1.3"
                             >
                                 {col.title.toUpperCase()}
                             </text>
@@ -111,26 +112,27 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                                 y={node.y}
                                 width={NODE_W}
                                 height={NODE_H}
-                                rx={9}
-                                fill="var(--surface-2)"
-                                stroke="var(--border-strong)"
+                                fill="var(--paper)"
+                                stroke="var(--rule)"
                                 strokeWidth={1}
                             />
                             <text
-                                x={node.x + 14}
-                                y={node.y + (node.role ? 25 : 36)}
-                                fill="var(--text)"
-                                fontSize="13"
-                                fontWeight="600"
+                                x={node.x + 12}
+                                y={node.y + (node.role ? 23 : 34)}
+                                fill="var(--ink)"
+                                fontFamily="var(--font-mono)"
+                                fontSize="11.5"
+                                fontWeight="500"
                             >
                                 {node.label}
                             </text>
                             {node.role && (
                                 <text
-                                    x={node.x + 14}
-                                    y={node.y + 43}
-                                    fill="var(--dim)"
-                                    fontSize="10.5"
+                                    x={node.x + 12}
+                                    y={node.y + 40}
+                                    fill="var(--ink-faint)"
+                                    fontFamily="var(--font-sans)"
+                                    fontSize="10"
                                 >
                                     {node.role}
                                 </text>
@@ -140,17 +142,20 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                 </svg>
             </div>
 
-            <ul className="mt-7 space-y-2.5 border-t border-[var(--border)] pt-6">
+            <ul className="mt-8 max-w-[var(--w-read)]">
                 {spec.edges.map((edge, i) => {
                     const a = byId.get(edge.from);
                     const b = byId.get(edge.to);
                     if (!a || !b) return null;
                     return (
-                        <li key={i} className="text-sm leading-relaxed text-[var(--muted)]">
-                            <span className="text-[var(--text)]">{a.label}</span>
-                            <span className="mx-2 text-[var(--dim)]">→</span>
-                            <span className="text-[var(--text)]">{b.label}</span>
-                            <span className="mx-2 text-[var(--dim)]">·</span>
+                        <li
+                            key={i}
+                            className="border-t border-[var(--rule)] py-2.5 text-[15px] leading-relaxed text-[var(--ink-soft)]"
+                        >
+                            <span className="t-meta text-[var(--ink)]">
+                                {a.label} → {b.label}
+                            </span>
+                            <br />
                             {edge.label}
                         </li>
                     );
