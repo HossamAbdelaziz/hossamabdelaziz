@@ -48,8 +48,8 @@ export default function HomeRail() {
                 <div className="mt-11">
                     <RailNav
                         items={[
-                            { id: 'work', label: 'Work' },
                             { id: 'about', label: 'About' },
+                            { id: 'work', label: 'Work' },
                             { id: 'contact', label: 'Contact' },
                         ]}
                     />

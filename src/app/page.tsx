@@ -1,31 +1,13 @@
-import SplitLayout from '@/components/SplitLayout';
-import HomeRail from '@/components/HomeRail';
-import WorkEntry from '@/components/WorkEntry';
-import SectionLabel from '@/components/SectionLabel';
-import { projects } from '@/content/projects';
+import SplitLayout from "@/components/SplitLayout";
+import HomeRail from "@/components/HomeRail";
+import WorkEntry from "@/components/WorkEntry";
+import SectionLabel from "@/components/SectionLabel";
+import { projects } from "@/content/projects";
 
 export default function Home() {
   return (
     <SplitLayout rail={<HomeRail />}>
-      <section id="work" className="scroll-mt-8 py-14 lg:py-24">
-        <SectionLabel>Work</SectionLabel>
-        <p className="t-prose mt-8">
-          Most of this is client code I can&apos;t show. So instead of demos,
-          each one is written up as a case study: the problem, the decision I
-          made and why, and the hardest thing I had to solve.
-        </p>
-
-        <div className="mt-12 max-w-[var(--w-read)]">
-          {projects.map((project) => (
-            <WorkEntry key={project.slug} project={project} />
-          ))}
-        </div>
-      </section>
-
-      <section
-        id="about"
-        className="scroll-mt-8 border-t border-[var(--rule)] py-14 lg:py-24"
-      >
+      <section id="about" className="scroll-mt-8 py-14 lg:py-24">
         <SectionLabel>About</SectionLabel>
         <div className="t-prose mt-8 space-y-5">
           <p>
@@ -43,6 +25,24 @@ export default function Home() {
             database, not only in the code; every release has a way back; and a
             test I haven&apos;t seen fail isn&apos;t a test.
           </p>
+        </div>
+      </section>
+
+      <section
+        id="work"
+        className="scroll-mt-8 border-t border-[var(--rule)] py-14 lg:py-24"
+      >
+        <SectionLabel>Work</SectionLabel>
+        <p className="t-prose mt-8">
+          Most of this is client code I can&apos;t show. So instead of demos,
+          each one is written up as a case study: the problem, the decision I
+          made and why, and the hardest thing I had to solve.
+        </p>
+
+        <div className="mt-12 max-w-[var(--w-read)]">
+          {projects.map((project) => (
+            <WorkEntry key={project.slug} project={project} />
+          ))}
         </div>
       </section>
 
