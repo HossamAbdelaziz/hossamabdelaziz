@@ -1,3 +1,5 @@
+import ContentTexture from './ContentTexture';
+
 export default function SplitLayout({
     rail,
     children,
@@ -15,8 +17,9 @@ export default function SplitLayout({
                 </div>
             </div>
 
-            <main className="min-w-0 flex-1 px-6 sm:px-10 lg:px-14 xl:px-20">
-                {children}
+            <main className="relative min-w-0 flex-1 px-6 sm:px-10 lg:px-14 xl:px-20">
+                <ContentTexture />
+                <div className="relative z-10">{children}</div>
             </main>
         </div>
     );

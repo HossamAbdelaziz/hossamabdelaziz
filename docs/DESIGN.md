@@ -137,7 +137,14 @@ download:
 - **A hairline grid** behind the rail only, at 3% white on a 48px pitch,
   masked so it fades out down the column.
 
-Nothing else moves or decorates. No glow, no gradient mesh.
+- **A technical drawing** behind the content column: the same node-graph
+  motif as the LinkedIn banner, plus concentric arcs and a short rule of
+  hairlines. Sticky with no height of its own, so it follows down the
+  column rather than appearing only at the top, and hidden below 1024px
+  where there is no room beside the text.
+
+Every one of these stays under 7% opacity and well clear of the reading
+column. Nothing else moves or decorates. No glow, no gradient mesh.
 
 ## Shape and depth
 
