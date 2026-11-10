@@ -38,21 +38,23 @@ the deepest, content sits a step lighter.
 
 | Token | Value | Role |
 |---|---|---|
-Lifted twice: the first dark was too deep and read as heavy. These are the
-mid-dark values — between the original light paper and that first dark.
+Lifted three times. The first dark read as heavy, the second still too
+dark and too brown. The ground is now a desaturated slate green — lighter,
+cooler, and the thing that makes rust and sand look expensive rather than
+rustic.
 
-| `--rail` | `#232020` | The fixed identity column, and diagram node fills |
-| `--paper` | `#312c29` | Page background for content |
-| `--paper-raised` | `#3a3431` | Quiet panels: facts strip, diagram ground |
-| `--ink` | `#f8f5f0` | Headings and emphasis. 12.7:1 |
-| `--ink-soft` | `#e2dbd1` | Body prose. 10.0:1 |
-| `--ink-faint` | `#ada399` | Meta, labels, dates. 5.6:1 |
-| `--rule` | `#4a433e` | Hairlines between sections and rows |
-| `--rule-strong` | `#8d8378` | Diagram arrows, the bar above a section label |
-| `--accent` | `#ef8a60` | Rust. Links and the active nav item only. 5.6:1 |
-| `--accent-light` | `#f5a685` | Hover |
-| `--accent-2` | `#7fc4b2` | Teal. Structure: diagram arrowheads, state arrows, fact markers, actor names. 6.9:1 |
-| `--accent-3` | `#edc688` | Sand. Data: step numbers, the role line in the rail. 8.6:1 |
+| `--rail` | `#283230` | The fixed identity column, and diagram node fills |
+| `--paper` | `#36403e` | Page background for content |
+| `--paper-raised` | `#404a48` | Quiet panels: facts strip, diagram ground |
+| `--ink` | `#f7f6f3` | Headings and emphasis. 9.9:1 |
+| `--ink-soft` | `#e4e1da` | Body prose. 8.2:1 |
+| `--ink-faint` | `#b9b4ab` | Meta, labels, dates. 5.2:1 |
+| `--rule` | `#4f5957` | Hairlines between sections and rows |
+| `--rule-strong` | `#8e9995` | Diagram arrows, the bar above a section label |
+| `--accent` | `#f59d77` | Rust. Links and the active nav item only. 5.1:1 |
+| `--accent-light` | `#fbb595` | Hover |
+| `--accent-2` | `#8ccfbc` | Teal. Structure: diagram arrowheads, state arrows, fact markers, actor names. 6.0:1 |
+| `--accent-3` | `#f0cd93` | Sand. Data: step numbers, the role line in the rail. 7.1:1 |
 
 Three, each with one job, so the page has life without becoming a parade:
 

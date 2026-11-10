@@ -3,22 +3,23 @@
 /* Tokens — see docs/DESIGN.md. Editorial: warm paper, serif prose,
    hairline rules, one rust accent, no shadows, radius 0. */
 :root {
-  /* Dark, warm. The rail is the deepest tone; content sits a step lighter. */
-  --rail: #232020;
-  --paper: #312c29;
-  --paper-raised: #3a3431;
-  --ink: #f8f5f0;
-  --ink-soft: #e2dbd1;
-  --ink-faint: #ada399;
-  --rule: #4a433e;
-  --rule-strong: #8d8378;
-  --accent: #ef8a60;
-  --accent-light: #f5a685;
+  /* Slate green, two steps up from the first dark. The rail is the deeper
+     tone; content sits a step lighter. */
+  --rail: #283230;
+  --paper: #36403e;
+  --paper-raised: #404a48;
+  --ink: #f7f6f3;
+  --ink-soft: #e4e1da;
+  --ink-faint: #b9b4ab;
+  --rule: #4f5957;
+  --rule-strong: #8e9995;
+  --accent: #f59d77;
+  --accent-light: #fbb595;
   /* Two more, so the page has some life in it without becoming a parade.
      Teal marks structure, sand marks data. Neither is ever used for a link. */
-  --accent-2: #7fc4b2;
-  --accent-3: #edc688;
-  --accent-wash: rgba(224, 122, 82, 0.22);
+  --accent-2: #8ccfbc;
+  --accent-3: #f0cd93;
+  --accent-wash: rgba(245, 157, 119, 0.24);
   --paper-dim: #9b9289;
 
   --font-serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
