@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/source-serif-4@5.2.5/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5.2.5/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.2.5/400.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  body{background:#283546;position:relative;font-family:'IBM Plex Sans',sans-serif}
+  .grid{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:linear-gradient(115deg,black,transparent 72%)}
+  svg.net{position:absolute;top:-30px;right:-40px;width:560px;opacity:.1}
+  .wrap{position:absolute;inset:0;display:flex;align-items:center;gap:56px;padding:0 76px}
+  .photo{width:188px;height:188px;flex:none;border-radius:3px;object-fit:cover}
+  .bar{width:72px;height:3px;background:linear-gradient(90deg,#f59d77,#8ccfbc);border-radius:3px;margin-bottom:26px}
+  h1{font-family:'Source Serif 4 Variable',serif;font-weight:600;font-size:72px;line-height:1.02;letter-spacing:-.02em;color:#f4f6f9}
+  .role{margin-top:18px;font-family:'IBM Plex Mono',monospace;font-size:19px;letter-spacing:.14em;text-transform:uppercase;color:#f0cd93}
+  .line{margin-top:30px;font-size:24px;line-height:1.45;color:#dde3ea;max-width:620px}
+  .foot{position:absolute;left:76px;bottom:54px;font-family:'IBM Plex Mono',monospace;font-size:16px;letter-spacing:.09em;color:#aeb6c2}
+  .foot b{color:#8ccfbc;font-weight:400}
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <svg class="net" viewBox="0 0 560 380" fill="none">
+    <g stroke="#f4f6f9" stroke-width="1.2">
+      <path d="M50 50 L160 100 M160 100 L100 200 M160 100 L290 60 M100 200 L230 240 M290 60 L390 140 M230 240 L390 140 M390 140 L350 230 M460 70 L390 140 M460 70 L290 60"/>
+    </g>
+    <g fill="#f4f6f9">
+      <circle cx="50" cy="50" r="4.5"/><circle cx="160" cy="100" r="6"/><circle cx="100" cy="200" r="4.5"/>
+      <circle cx="290" cy="60" r="5"/><circle cx="230" cy="240" r="4.5"/><circle cx="390" cy="140" r="6"/>
+      <circle cx="350" cy="230" r="4"/><circle cx="460" cy="70" r="5"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <img class="photo" src="hossam-portrait.jpg">
+    <div>
+      <div class="bar"></div>
+      <h1>Hossam<br>Abdelaziz</h1>
+      <div class="role">SOFTWARE ENGINEER</div>
+      <div class="line">Three products I built alone — live on the web, iPhone and Android.</div>
+    </div>
+  </div>
+  <div class="foot">RECOVERY SPACE <b>·</b> FIELDBASE <b>·</b> HOJ RENTALS <b>·</b> FIXNEXT</div>
+</body>
+</html>

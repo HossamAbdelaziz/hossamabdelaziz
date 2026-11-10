@@ -52,7 +52,7 @@ export default function Home() {
       >
         <SectionLabel>Contact</SectionLabel>
         <p className="t-prose mt-8">
-          Open to a Summer 2027 software developer internship or co-op in the
+          Open to a Summer 2027 software engineering internship or co-op in the
           Greater Toronto Area.
         </p>
         <ul className="mt-8 space-y-3 text-[15px]">

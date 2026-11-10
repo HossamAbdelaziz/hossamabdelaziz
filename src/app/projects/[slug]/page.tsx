@@ -24,12 +24,34 @@ export async function generateMetadata({
     if (!project) return {};
 
     const title = `${project.name} — Hossam Abdelaziz`;
+    // openGraph here replaces the root's outright, so the image has to be
+    // repeated or shared links come out blank.
+    const images = [
+        {
+            url: '/og.png',
+            width: 1200,
+            height: 630,
+            alt: 'Hossam Abdelaziz — software engineer',
+        },
+    ];
     return {
         title,
         description: project.tagline,
         alternates: { canonical: `/projects/${project.slug}` },
-        openGraph: { title, description: project.tagline, type: 'article' },
-        twitter: { card: 'summary_large_image', title, description: project.tagline },
+        openGraph: {
+            title,
+            description: project.tagline,
+            type: 'article',
+            url: `https://www.hossamabdelaziz.com/projects/${project.slug}`,
+            siteName: 'Hossam Abdelaziz',
+            images,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description: project.tagline,
+            images: ['/og.png'],
+        },
     };
 }
 

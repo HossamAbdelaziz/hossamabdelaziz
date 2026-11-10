@@ -244,6 +244,23 @@ worse on a phone than no drawing at all.
 
 Checked for horizontal overflow at 375, 768, 1024 and 1440.
 
+## Link preview and icons
+
+`public/og.png` (1200x630) is what appears when the site is shared. Same
+identity as the site: blue ink, the grid, the node graph, the portrait,
+a rust-to-teal bar, and the four product names along the bottom.
+
+It is a screenshot of `docs/og-card.html`, kept so the card can be
+re-rendered when something changes — a new product, a different role
+line. Render it with Playwright at 1200x630, deviceScaleFactor 1.
+
+**Each page has to repeat the image.** A page's `openGraph` replaces the
+root's outright rather than merging, so a project page that sets only a
+title and description comes out with no preview image at all.
+
+The icon is `public/icon.svg`, with `favicon.ico` and `apple-icon.png`
+generated from it.
+
 ## Still to decide
 - Whether the LinkedIn banner gets re-cut to match this (it is currently
   dark blue-to-teal, from `BANNER_SOURCE.md`) — the two will not look

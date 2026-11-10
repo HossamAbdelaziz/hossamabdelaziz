@@ -32,7 +32,7 @@ export default function HomeRail() {
                 </h1>
 
                 <p className="mt-4 font-mono text-[12px] tracking-[0.12em] text-[var(--accent-3)] uppercase">
-                    Software developer
+                    Software engineer
                 </p>
 
                 <p className="mt-7 max-w-[36ch] text-[16px] leading-relaxed text-[var(--ink-soft)]">
@@ -42,7 +42,7 @@ export default function HomeRail() {
                 </p>
 
                 <p className="mt-4 max-w-[36ch] text-[16px] leading-relaxed text-[var(--ink)]">
-                    Open to a Summer 2027 software developer internship or co-op.
+                    Open to a Summer 2027 software engineering internship or co-op.
                 </p>
 
                 <div className="mt-11">
