@@ -22,6 +22,11 @@ const fixnext: Project = {
 
     stack: ['Python', 'pandas', 'scikit-learn', 'Next.js', 'TypeScript'],
 
+    cover: {
+        src: '/images/datathon-team.jpg',
+        alt: 'The team at work during the Sheridan Datathon',
+    },
+
     photo: {
         src: '/images/datathon-team.jpg',
         alt: 'Four people standing around laptops at the Sheridan Datathon',

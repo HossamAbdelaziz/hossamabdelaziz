@@ -76,6 +76,10 @@ export interface Project {
     testing?: string[];
     diagram?: Diagram;
     photo?: ProjectPhoto;
+    /** Shown on the home page beside the project. Omit for white-label work. */
+    cover?: ProjectPhoto;
+    /** A second, phone-shaped image layered over the cover. */
+    coverPhone?: ProjectPhoto;
 }
 
 /** True when there is enough written for a case-study page to exist. */

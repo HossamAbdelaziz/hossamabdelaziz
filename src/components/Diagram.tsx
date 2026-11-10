@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Diagram as DiagramSpec } from '@/content/types';
 
 const NODE_W = 196;
@@ -16,7 +19,46 @@ interface Placed {
     y: number;
 }
 
+/** useLayoutEffect warns during SSR; fall back to useEffect on the server. */
+const useIsomorphicLayoutEffect =
+    typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 export default function Diagram({ spec }: { spec: DiagramSpec }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [armed, setArmed] = useState(false);
+    const [shown, setShown] = useState(false);
+
+    // Only hide things once we know scripting works, so the diagram is never
+    // invisible without JS.
+    useIsomorphicLayoutEffect(() => {
+        const reduced = window.matchMedia(
+            '(prefers-reduced-motion: reduce)',
+        ).matches;
+        if (reduced) {
+            setShown(true);
+            return;
+        }
+        setArmed(true);
+    }, []);
+
+    useEffect(() => {
+        if (!armed || shown) return;
+        const el = ref.current;
+        if (!el) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries.some((e) => e.isIntersecting)) {
+                    setShown(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '0px 0px -15% 0px', threshold: 0.15 },
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [armed, shown]);
+
     const placed: Placed[] = [];
     const maxRows = Math.max(...spec.columns.map((c) => c.nodes.length));
     const bodyH = maxRows * NODE_H + (maxRows - 1) * NODE_GAP;
@@ -39,32 +81,16 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
     const height = PAD * 2 + TITLE_H + bodyH;
     const byId = new Map(placed.map((p) => [p.id, p]));
 
-    const paths = spec.edges.flatMap((edge, i) => {
-        const a = byId.get(edge.from);
-        const b = byId.get(edge.to);
-        if (!a || !b || a.col === b.col) return [];
+    // Columns appear first, then the arrows between them.
+    const nodeDelay = (col: number) => col * 180;
+    const edgeDelay = 180 * spec.columns.length + 120;
 
-        const forward = a.col < b.col;
-        const sx = forward ? a.x + NODE_W : a.x;
-        const ex = forward ? b.x : b.x + NODE_W;
-        const sy = a.y + NODE_H / 2;
-        const ey = b.y + NODE_H / 2;
-        const bend = forward ? 48 : -48;
-
-        return [
-            <path
-                key={i}
-                d={`M ${sx} ${sy} C ${sx + bend} ${sy}, ${ex - bend} ${ey}, ${ex} ${ey}`}
-                fill="none"
-                stroke="var(--ink-faint)"
-                strokeWidth={1}
-                markerEnd="url(#diagram-arrow)"
-            />,
-        ];
-    });
+    const visible = !armed || shown;
+    const cls = (base: string) =>
+        armed ? `${base} reveal${shown ? ' is-in' : ''}` : base;
 
     return (
-        <div>
+        <div ref={ref}>
             <div className="overflow-x-auto border border-[var(--rule)] bg-[var(--paper-raised)]">
                 <svg
                     viewBox={`0 0 ${width} ${height}`}
@@ -97,16 +123,46 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                                 fontFamily="var(--font-mono)"
                                 fontSize="9.5"
                                 letterSpacing="1.3"
+                                className={cls('')}
+                                style={{ transitionDelay: `${nodeDelay(ci)}ms` }}
                             >
                                 {col.title.toUpperCase()}
                             </text>
                         ) : null,
                     )}
 
-                    {paths}
+                    {spec.edges.map((edge, i) => {
+                        const a = byId.get(edge.from);
+                        const b = byId.get(edge.to);
+                        if (!a || !b || a.col === b.col) return null;
+
+                        const forward = a.col < b.col;
+                        const sx = forward ? a.x + NODE_W : a.x;
+                        const ex = forward ? b.x : b.x + NODE_W;
+                        const sy = a.y + NODE_H / 2;
+                        const ey = b.y + NODE_H / 2;
+                        const bend = forward ? 48 : -48;
+
+                        return (
+                            <path
+                                key={i}
+                                d={`M ${sx} ${sy} C ${sx + bend} ${sy}, ${ex - bend} ${ey}, ${ex} ${ey}`}
+                                fill="none"
+                                stroke="var(--ink-faint)"
+                                strokeWidth={1}
+                                markerEnd="url(#diagram-arrow)"
+                                className={cls('')}
+                                style={{ transitionDelay: `${edgeDelay + i * 60}ms` }}
+                            />
+                        );
+                    })}
 
                     {placed.map((node) => (
-                        <g key={node.id}>
+                        <g
+                            key={node.id}
+                            className={cls('')}
+                            style={{ transitionDelay: `${nodeDelay(node.col)}ms` }}
+                        >
                             <rect
                                 x={node.x}
                                 y={node.y}
@@ -142,7 +198,7 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                 </svg>
             </div>
 
-            <ul className="mt-8 max-w-[var(--w-read)]">
+            <ul className="mt-8 max-w-[var(--w-read)]" aria-hidden={!visible}>
                 {spec.edges.map((edge, i) => {
                     const a = byId.get(edge.from);
                     const b = byId.get(edge.to);
@@ -150,7 +206,10 @@ export default function Diagram({ spec }: { spec: DiagramSpec }) {
                     return (
                         <li
                             key={i}
-                            className="border-t border-[var(--rule)] py-2.5 text-[15px] leading-relaxed text-[var(--ink-soft)]"
+                            className={cls(
+                                'border-t border-[var(--rule)] py-2.5 text-[15px] leading-relaxed text-[var(--ink-soft)]',
+                            )}
+                            style={{ transitionDelay: `${edgeDelay + i * 60}ms` }}
                         >
                             <span className="t-meta text-[var(--ink)]">
                                 {a.label} → {b.label}

@@ -12,6 +12,8 @@
   --rule-strong: #1a1714;
   --accent: #a33b1f;
   --accent-wash: #f0e2dc;
+  --accent-light: #e4a08a;
+  --paper-dim: #a79f95;
 
   --font-serif: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
@@ -144,6 +146,28 @@ body {
 }
 .prose-link:hover {
   text-decoration-thickness: 2px;
+}
+
+.rail-link {
+  color: var(--paper-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s;
+}
+.rail-link:hover {
+  color: var(--paper);
+}
+
+/* Diagram reveal — honours prefers-reduced-motion via the block below. */
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
 }
 
 ::selection {

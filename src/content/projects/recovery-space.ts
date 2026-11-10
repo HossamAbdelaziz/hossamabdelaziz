@@ -9,6 +9,15 @@ const recoverySpace: Project = {
     dates: 'March 2025 – present',
     order: 1,
 
+    cover: {
+        src: '/images/shot-recovery-web.jpg',
+        alt: 'The Recovery Space website',
+    },
+    coverPhone: {
+        src: '/images/shot-recovery-mobile.jpg',
+        alt: 'Recovery Space on a phone',
+    },
+
     links: [
         { label: 'asmaagad.com', href: 'https://www.asmaagad.com' },
         {

@@ -9,6 +9,11 @@ const hojRentals: Project = {
     dates: 'April 2025 – present',
     order: 3,
 
+    cover: {
+        src: '/images/shot-hoj-web.jpg',
+        alt: 'The HOJ Rentals website',
+    },
+
     links: [{ label: 'hojrentals.ca', href: 'https://www.hojrentals.ca' }],
 
     facts: [
