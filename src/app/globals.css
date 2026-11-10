@@ -4,14 +4,14 @@
    hairline rules, one rust accent, no shadows, radius 0. */
 :root {
   /* Dark, warm. The rail is the deepest tone; content sits a step lighter. */
-  --rail: #121010;
-  --paper: #1b1817;
-  --paper-raised: #241f1d;
-  --ink: #f3eee7;
-  --ink-soft: #c6bcb1;
-  --ink-faint: #8d8378;
-  --rule: #332d29;
-  --rule-strong: #6f655c;
+  --rail: #161312;
+  --paper: #221e1c;
+  --paper-raised: #2b2624;
+  --ink: #f7f3ed;
+  --ink-soft: #ddd5ca;
+  --ink-faint: #a2988c;
+  --rule: #3b3530;
+  --rule-strong: #7d7268;
   --accent: #e07a52;
   --accent-light: #eb9a79;
   --accent-wash: rgba(224, 122, 82, 0.22);
@@ -51,7 +51,6 @@ body {
   font-family: var(--font-sans);
   font-size: 17px;
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
