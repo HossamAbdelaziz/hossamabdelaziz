@@ -38,16 +38,19 @@ the deepest, content sits a step lighter.
 
 | Token | Value | Role |
 |---|---|---|
-| `--rail` | `#121010` | The fixed identity column, and diagram node fills |
-| `--paper` | `#1b1817` | Page background for content |
-| `--paper-raised` | `#241f1d` | Quiet panels: facts strip, diagram ground |
-| `--ink` | `#f3eee7` | Headings and emphasis. Warm off-white, never pure |
-| `--ink-soft` | `#c6bcb1` | Body prose |
-| `--ink-faint` | `#8d8378` | Meta, labels, dates |
-| `--rule` | `#332d29` | Hairlines between sections and rows |
-| `--rule-strong` | `#6f655c` | Diagram arrows, the bar above a section label |
-| `--accent` | `#e07a52` | Links, the active nav item, diagram arrowheads |
-| `--accent-light` | `#eb9a79` | Hover |
+Lifted twice: the first dark was too deep and read as heavy. These are the
+mid-dark values — between the original light paper and that first dark.
+
+| `--rail` | `#232020` | The fixed identity column, and diagram node fills |
+| `--paper` | `#312c29` | Page background for content |
+| `--paper-raised` | `#3a3431` | Quiet panels: facts strip, diagram ground |
+| `--ink` | `#f8f5f0` | Headings and emphasis. 12.7:1 |
+| `--ink-soft` | `#e2dbd1` | Body prose. 10.0:1 |
+| `--ink-faint` | `#ada399` | Meta, labels, dates. 5.6:1 |
+| `--rule` | `#4a433e` | Hairlines between sections and rows |
+| `--rule-strong` | `#8d8378` | Diagram arrows, the bar above a section label |
+| `--accent` | `#ef8a60` | Links, the active nav item, diagram arrowheads. 5.6:1 |
+| `--accent-light` | `#f5a685` | Hover |
 
 One accent only, and it is warm rust rather than the blue or teal every
 generated portfolio reaches for. The warmth is what keeps this from being
